@@ -1,3 +1,6 @@
+# pip install pygame
+# pip install gtts
+
 import pygame
 
 # 초기화
