@@ -27,7 +27,7 @@ running = True
 # 게임 루프
 while running:
     for event in pygame.event.get():
-        running, current_state = handle_events(event, current_state, close_x, close_y, close_width, close_height)
+        running, current_state = handle_events(event, current_state)
     screen.fill(BLACK)
 
     # 게임 영역 렌더링

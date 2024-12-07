@@ -2,7 +2,7 @@
 import pygame
 from constants import *
 
-def handle_events(event, current_state, close_x, close_y, close_width, close_height):
+def handle_events(event, current_state):
     if event.type == pygame.QUIT:
         return False, current_state
     if event.type == pygame.MOUSEBUTTONDOWN:
