@@ -23,4 +23,4 @@ def handle_events(event, current_state):
             elif start_button_x <= mouse_x <= start_button_x + button_width and explanation_button_y <= mouse_y <= explanation_button_y + button_height:
                 current_state = STATE_GAME  # 상태를 설명으로 변경
 
-    return True, current_state
+    return True, current_state, sound_status
