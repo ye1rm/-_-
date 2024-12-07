@@ -2,7 +2,7 @@
 import pygame
 from constants import *
 
-def handle_events(event, current_state):
+def handle_events(event, current_state, sound_status):
     if event.type == pygame.QUIT:
         return False, current_state
     if event.type == pygame.MOUSEBUTTONDOWN:
@@ -14,6 +14,12 @@ def handle_events(event, current_state):
         # 홈 버튼 클릭 시 
         if home_x <= mouse_x <= home_x + home_width and home_y <= mouse_y <= home_y + home_height:
             current_state = STATE_HOME
+
+        ############예림#############################
+        # 소리 버튼 클릭 시 소리 상태 변경
+        if sound_x <= mouse_x <= sound_x + soundON_width and sound_y <= mouse_y <= sound_y + soundON_height:
+            sound_status = not sound_status  # 소리 상태를 반전시킴 (True -> false, false -> True)
+        #############################################
         
         if current_state == STATE_HOME:  # HOME 상태일 때
             # "게임 시작" 버튼 클릭
@@ -23,4 +29,4 @@ def handle_events(event, current_state):
             elif start_button_x <= mouse_x <= start_button_x + button_width and explanation_button_y <= mouse_y <= explanation_button_y + button_height:
                 current_state = STATE_GAME  # 상태를 설명으로 변경
 
-    return True, current_state
+    return True, current_state, sound_status
