@@ -1,6 +1,5 @@
 #game_logic.py
 import pygame
-
 from constants import *
 
 def handle_events(event, current_state, sound_status):
