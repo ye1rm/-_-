@@ -1,3 +1,4 @@
+# constants.py
 import pygame
 
 # 고정 화면 크기
