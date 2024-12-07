@@ -33,6 +33,8 @@ bigScreen_image, bigScreen_width, bigScreen_height = load_and_scale_image(assets
 smallScreen_image, smallScreen_width, smallScreen_height = load_and_scale_image(assets_paths["smallScreen"], 0.05)
 # 도장판 이미지 로드
 stampBoard_image, stampBoard_width, stampBoard_height = load_and_scale_image(assets_paths["stampBoard"], 0.06)
+# 홈 이미지 로드
+home_image, home_width, home_height = load_and_scale_image(assets_paths["home"], 0.07)
 
 # 버튼 위치
 # 엑스 버튼 위치 (고정 화면 상단 우측)
@@ -47,6 +49,9 @@ screen_y = 10
 # 도장판 버튼 위치 (화면 버튼 왼쪽)
 stampBoard_x = screen_x - stampBoard_width - 10
 stampBoard_y = close_y + (close_height - stampBoard_height) // 2
+# 홈 버튼 위치 (고정 화면 왼쪽 하단)
+home_x = 10
+home_y = HEIGHT - home_height - 10
 
 # 초기 상태
 current_state = STATE_HOME
@@ -72,6 +77,10 @@ while running:
     elif current_state == STATE_GAME:
         game_surface.fill(LIGHT_GREEN)  # 게임 상태 배경 색상
         screen.blit(game_surface, (game_area_x, game_area_y))
+
+    # 홈 버튼 생성   
+    if current_state != STATE_HOME:
+        screen.blit(home_image, (home_x, home_y))
 
     # 게임화면 초기화
     game_surface.fill(LIGHT_GREEN)
