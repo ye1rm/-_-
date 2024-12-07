@@ -24,10 +24,14 @@ game_font.set_bold(True)
 current_state = STATE_HOME
 running = True
 
+###########예림###############
+sound_status = True
+##############################
+
 # 게임 루프
 while running:
     for event in pygame.event.get():
-        running, current_state = handle_events(event, current_state)
+        running, current_state, sound_status = handle_events(event, current_state, sound_status)
     screen.fill(BLACK)
 
     # 게임 영역 렌더링
@@ -57,7 +61,11 @@ while running:
     screen.blit(close_image, (close_x, close_y))
     ############예림##########
     # 소리 버튼
-    screen.blit(soundON_image, (sound_x, sound_y))
+    if sound_status:
+        screen.blit(soundON_image, (sound_x, sound_y))
+    else:
+        screen.blit(soundOFF_image, (sound_x, sound_y))
+    ###########################
     # 화면 버튼
     screen.blit(bigScreen_image, (screen_x, screen_y))
     # 도장판 버튼
