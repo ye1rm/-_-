@@ -42,9 +42,9 @@ button_height = 60
 # 엑스
 close_image, close_width, close_height = load_and_scale_image(assets_paths["close"], 0.05)
 # 소리 ON
-soundON_imgae, soundON_width, soundON_height = load_and_scale_image(assets_paths["soundON"], 0.07)
+soundON_image, soundON_width, soundON_height = load_and_scale_image(assets_paths["soundON"], 0.07)
 # 소리 OFF
-soundOFF_imgae, soundOFF_width, soundOFF_height = load_and_scale_image(assets_paths["soundOFF"], 0.07)
+soundOFF_image, soundOFF_width, soundOFF_height = load_and_scale_image(assets_paths["soundOFF"], 0.07)
 # 화면 확대
 bigScreen_image, bigScreen_width, bigScreen_height = load_and_scale_image(assets_paths["bigScreen"], 0.05)
 # 화면 축소

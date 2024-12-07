@@ -27,7 +27,7 @@ running = True
 # 게임 루프
 while running:
     for event in pygame.event.get():
-        running, current_state = handle_events(event, current_state, close_x, close_y, close_width, close_height)
+        running, current_state = handle_events(event, current_state)
     screen.fill(BLACK)
 
     # 게임 영역 렌더링
@@ -55,8 +55,9 @@ while running:
     # 상단 버튼 출력
     # 엑스 버튼
     screen.blit(close_image, (close_x, close_y))
+    ############예림##########
     # 소리 버튼
-    screen.blit(soundON_imgae, (sound_x, sound_y))
+    screen.blit(soundON_image, (sound_x, sound_y))
     # 화면 버튼
     screen.blit(bigScreen_image, (screen_x, screen_y))
     # 도장판 버튼
