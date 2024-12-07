@@ -2,12 +2,6 @@
 import pygame
 from constants import *
 
-# 시작 버튼 위치 (게임 화면 중앙 하단)
-start_button_x = game_area_x + (GAME_AREA_WIDTH - button_width) // 2
-start_button_y = game_area_y + GAME_AREA_HEIGHT // 2 + 50
-# 설명 버튼 위치
-explanation_button_y = start_button_y + button_height + 20
-
 def render_home_screen(screen, font, game_font):
     # 게임 화면 영역
     pygame.draw.rect(screen, BLACK, (game_area_x, game_area_y, GAME_AREA_WIDTH, GAME_AREA_HEIGHT))

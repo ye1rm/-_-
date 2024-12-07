@@ -1,6 +1,5 @@
 #game_logic.py
 import pygame
-from HomeScreen import start_button_x,start_button_y,explanation_button_y
 from constants import *
 
 def handle_events(event, current_state, close_x, close_y, close_width, close_height):
@@ -11,6 +10,10 @@ def handle_events(event, current_state, close_x, close_y, close_width, close_hei
         # 엑스 버튼 클릭 시 종료
         if close_x <= mouse_x <= close_x + close_width and close_y <= mouse_y <= close_y + close_height:
             return False, current_state
+        
+        # 홈 버튼 클릭 시 
+        if home_x <= mouse_x <= home_x + home_width and home_y <= mouse_y <= home_y + home_height:
+            current_state = STATE_HOME
         
         if current_state == STATE_HOME:  # HOME 상태일 때
             # "게임 시작" 버튼 클릭
