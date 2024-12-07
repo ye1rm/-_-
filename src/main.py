@@ -24,9 +24,9 @@ game_font.set_bold(True)
 current_state = STATE_HOME
 running = True
 
-###########예림############
+###########예림###########
 sound_status = True
-###########################
+##########################
 
 # 게임 루프
 while running:

@@ -16,11 +16,11 @@ def handle_events(event, current_state, sound_status):
         if home_x <= mouse_x <= home_x + home_width and home_y <= mouse_y <= home_y + home_height:
             current_state = STATE_HOME
 
-        ############예림###########################
+        ###########예림###########################
         # 소리 버튼 클릭 시 소리 상태 변경
         if sound_x <= mouse_x <= sound_x + soundON_width and sound_y <= mouse_y <= sound_y + soundON_height:
             sound_status = not sound_status  # 소리 상태를 반전시킴 (True -> false, false -> True)
-        ###########################################
+        ##########################################
         
         if current_state == STATE_HOME:  # HOME 상태일 때
             # "게임 시작" 버튼 클릭
