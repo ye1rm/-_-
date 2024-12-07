@@ -9,6 +9,7 @@ assets_paths = {
     "bigScreen": "C:/Users/user/Desktop/TALA/TALA/assets/Icon/bigScreen.png",
     "smallScreen": "C:/Users/user/Desktop/TALA/TALA/assets/Icon/smallScreen.png",
     "stampBoard": "C:/Users/user/Desktop/TALA/TALA/assets/Icon/stampBoard.png",
+    "home" : "C:/Users/user/Desktop/TALA/TALA/assets/Icon/home.png",
     "font" : "C:/Users/user/Desktop/TALA/TALA/assets/fonts/Ramche.ttf"
 }
 
