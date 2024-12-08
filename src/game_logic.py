@@ -4,12 +4,12 @@ from constants import *
 
 def handle_events(event, current_state, sound_status):
     if event.type == pygame.QUIT:
-        return False, current_state
+        return False, current_state, sound_status
     if event.type == pygame.MOUSEBUTTONDOWN:
         mouse_x, mouse_y = pygame.mouse.get_pos()
         # 엑스 버튼 클릭 시 종료
         if close_x <= mouse_x <= close_x + close_width and close_y <= mouse_y <= close_y + close_height:
-            return False, current_state
+            return False, current_state, sound_status
         
         # 홈 버튼 클릭 시 
         if home_x <= mouse_x <= home_x + home_width and home_y <= mouse_y <= home_y + home_height:
