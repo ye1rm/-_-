@@ -22,10 +22,15 @@ LIGHT_GREEN = pygame.Color("#aad750")
 DARK_GREEN = pygame.Color("#a2d148")
 YELLOW = pygame.Color("#ffd400")
 
-# 상태 정의
+# 화면 상태 정의
 STATE_HOME = "home"
 STATE_GAME = "game"
 STATE_HOW = "how"
+STATE_STAMP = "stamp"
+STATE_FAIL = "fail"
+STATE_CLEAR = "clear"
+STATE_WORD_CLEAR = "wordClear"
+STATE_WORD = "word"
 
 
 # 텍스트
@@ -53,6 +58,8 @@ smallScreen_image, smallScreen_width, smallScreen_height = load_and_scale_image(
 stampBoard_image, stampBoard_width, stampBoard_height = load_and_scale_image(assets_paths["stampBoard"], 0.06)
 # 홈
 home_image, home_width, home_height = load_and_scale_image(assets_paths["home"], 0.07)
+# 음성 지원
+voice_image, voice_width, voice_height = load_and_scale_image(assets_paths["voice"], 0.07)
 
 # 버튼 위치
 # 엑스 버튼 위치 (고정 화면 상단 우측)
