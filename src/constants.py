@@ -3,9 +3,9 @@ import pygame
 from assets import load_and_scale_image, assets_paths
 
 # 고정 화면 크기
-CELL_SIZE = 20
-GRID_WIDTH = 40
-GRID_HEIGHT = 40
+CELL_SIZE = 45
+GRID_WIDTH = 20
+GRID_HEIGHT = 20
 WIDTH = CELL_SIZE * GRID_WIDTH
 HEIGHT = CELL_SIZE * GRID_HEIGHT
 

@@ -28,3 +28,13 @@ def render_home_screen(screen, font, game_font):
     game_text_rect = game_text_surface.get_rect(center=(WIDTH // 2, HEIGHT // 3))
 
     return start_text, start_text_rect, explanation_text, explanation_text_rect, game_text_surface, game_text_rect
+
+def draw_grid(game_surface):
+    for y in range(GAME_AREA_HEIGHT // CELL_SIZE):
+        for x in range(GAME_AREA_WIDTH//CELL_SIZE):
+            color = LIGHT_GREEN if (x + y) % 2 == 0 else DARK_GREEN
+            pygame.draw.rect(
+                game_surface,
+                color,
+                (x * CELL_SIZE, y * CELL_SIZE, CELL_SIZE, CELL_SIZE)
+            )

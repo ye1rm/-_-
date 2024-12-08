@@ -3,7 +3,7 @@ import pygame
 from constants import *
 from assets import assets_paths
 from game_logic import handle_events
-from HomeScreen import render_home_screen
+from HomeScreen import render_home_screen, draw_grid
 
 # 초기화
 pygame.init()
@@ -54,14 +54,12 @@ while running:
 
     elif current_state == STATE_GAME:
         game_surface.fill(LIGHT_GREEN)  # 게임 상태 배경 색상
+        draw_grid(game_surface)
         screen.blit(game_surface, (game_area_x, game_area_y))
 
     # 홈 버튼 생성   
     if current_state != STATE_HOME:
         screen.blit(home_image, (home_x, home_y))
-
-    # 게임화면 초기화
-    game_surface.fill(LIGHT_GREEN)
 
     # 상단 버튼 출력
     # 엑스 버튼
