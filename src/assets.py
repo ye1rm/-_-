@@ -10,7 +10,9 @@ assets_paths = {
     "smallScreen": "C:/Users/user/Desktop/TALA/TALA/assets/Icon/smallScreen.png",
     "stampBoard": "C:/Users/user/Desktop/TALA/TALA/assets/Icon/stampBoard.png",
     "home" : "C:/Users/user/Desktop/TALA/TALA/assets/Icon/home.png",
-    "font" : "C:/Users/user/Desktop/TALA/TALA/assets/fonts/Ramche.ttf"
+    "voice" : "C:/Users/user/Desktop/TALA/TALA/assets/Icon/voiceSupport.png",
+    "font" : "C:/Users/user/Desktop/TALA/TALA/assets/fonts/Ramche.ttf",
+    "bgm" : "C:/Users/user/Desktop/TALA/TALA/assets/Bgm/sound-k-117217.mp3"
 }
 
 # 이미지 로딩 및 크기 조정 함수

@@ -8,6 +8,9 @@ from HomeScreen import render_home_screen
 # 초기화
 pygame.init()
 
+# Mixer 초기화
+pygame.mixer.init()
+
 # 고정화면 초기화 (프레임 없는 창)
 screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.NOFRAME)
 pygame.display.set_caption("Fixed Frame TALA Game")
@@ -20,6 +23,10 @@ font = pygame.font.Font(assets_paths["font"], 24)
 game_font = pygame.font.Font(assets_paths["font"], 36)
 game_font.set_bold(True)
 
+# BGM 로드
+pygame.mixer.music.load(assets_paths["bgm"])
+
+pygame.mixer.music.play(-1)
 # 초기 상태
 current_state = STATE_HOME
 running = True
@@ -63,8 +70,10 @@ while running:
     # 소리 버튼
     if sound_status:
         screen.blit(soundON_image, (sound_x, sound_y))
+        pygame.mixer.music.unpause()
     else:
         screen.blit(soundOFF_image, (sound_x, sound_y))
+        pygame.mixer.music.pause()
     ###########################
     # 화면 버튼
     screen.blit(bigScreen_image, (screen_x, screen_y))
