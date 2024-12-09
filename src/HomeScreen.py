@@ -1,4 +1,4 @@
-# gameScreen.py
+# HomeScreen.py
 import pygame
 from constants import *
 
