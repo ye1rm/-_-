@@ -4,9 +4,6 @@ from constants import *
 from assets import assets_paths
 from game_logic import handle_events
 from HomeScreen import render_home_screen, draw_grid
-###############예림##############
-from HowScreen import render_how_to_play_screen # 추가된 부분
-################################
 
 # 초기화
 pygame.init()
@@ -59,11 +56,6 @@ while running:
         game_surface.fill(LIGHT_GREEN)  # 게임 상태 배경 색상
         draw_grid(game_surface)
         screen.blit(game_surface, (game_area_x, game_area_y))
-        ################예림##############
-    # 게임 설명 화면 렌더링
-    elif current_state == STATE_HOW:
-        start_text, start_text_rect = render_how_to_play_screen(screen, font)
-        screen.blit(start_text, start_text_rect)
 
     # 홈 버튼 생성   
     if current_state != STATE_HOME:
