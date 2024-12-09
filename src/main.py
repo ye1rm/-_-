@@ -3,9 +3,10 @@ import pygame
 from constants import *
 from assets import assets_paths
 from game_logic import handle_events
-from HomeScreen import render_home_screen, draw_grid
+from HomeScreen import render_home_screen
+from GameScreen import draw_grid
 ###############예림##############
-from HowScreen import render_how_to_play_screen # 추가된 부분
+from HowScreen import render_how_screen # 추가된 부분
 ################################
 
 # 초기화
@@ -37,6 +38,7 @@ running = True
 ###########예림###############
 sound_status = True
 ##############################
+maxScore = 0
 
 # 게임 루프
 while running:
@@ -56,20 +58,32 @@ while running:
         screen.blit(game_text_surface, game_text_rect)
 
     elif current_state == STATE_GAME:
-        game_surface.fill(LIGHT_GREEN)  # 게임 상태 배경 색상
         draw_grid(game_surface)
         screen.blit(game_surface, (game_area_x, game_area_y))
         ################예림##############
     # 게임 설명 화면 렌더링
     elif current_state == STATE_HOW:
-        start_text, start_text_rect = render_how_to_play_screen(screen, font)
+        start_text, start_text_rect = render_how_screen(screen, font)
         screen.blit(start_text, start_text_rect)
 
     # 홈 버튼 생성   
     if current_state != STATE_HOME:
         screen.blit(home_image, (home_x, home_y))
 
-    # 상단 버튼 출력
+    if current_state == STATE_STAMP:
+        game_surface.fill(LIGHT_GREEN)
+
+        maxScore_text_surface = font.render(f"최고 점수: {maxScore}", True, TEXT_COLOR)
+        
+        maxScore_text_width, maxScore_text_height = maxScore_text_surface.get_size()
+        maxScore_text_x = WIDTH - maxScore_text_width - 20  # 오른쪽에서 20px 간격
+        maxScore_text_y = HEIGHT - maxScore_text_height - 20  # 하단에서 20px 간격
+
+        # 고정 화면에 텍스트 출력
+        screen.blit(maxScore_text_surface, (maxScore_text_x, maxScore_text_y))
+        screen.blit(game_surface, (game_area_x, game_area_y))  # 화면에 렌더링
+
+    # 고정 화면 상단 버튼 출력
     # 엑스 버튼
     screen.blit(close_image, (close_x, close_y))
     ############예림##########

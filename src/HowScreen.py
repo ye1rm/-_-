@@ -1,7 +1,7 @@
 import pygame
 from constants import *
 
-def render_how_to_play_screen(screen, font):
+def render_how_screen(screen, font):
     # 화면 배경 색상 설정
     screen.fill(BLACK)
 
