@@ -38,6 +38,14 @@ running = True
 ###########예림###############
 sound_status = True
 ##############################
+game_status = True
+
+score = 0
+level = 1
+current_word = ""
+getWord = ""
+setWord = ""
+
 maxScore = 0
 
 # 게임 루프
@@ -60,7 +68,41 @@ while running:
     elif current_state == STATE_GAME:
         draw_grid(game_surface)
         screen.blit(game_surface, (game_area_x, game_area_y))
-        ################예림##############
+
+        # 고정화면 좌측 상단에 점수와 레벨 표시
+        score_surface = font.render(f"Score: {maxScore}", True, TEXT_COLOR)
+        level_surface = font.render(f"Level {level} : {current_word}", True, TEXT_COLOR)
+        
+        # 점수와 레벨을 화면에 출력
+        screen.blit(score_surface, (score_x, score_y))  # 점수 출력
+        screen.blit(level_surface, (level_x, level_y))  # 레벨과 단어 출력
+
+        # 밑줄 위치 및 길이 계산
+        underline_x = (WIDTH - len(current_word) * 50) // 2  # 화면 중앙 하단 시작점
+        underline_y = HEIGHT - 20 # 밑줄을 화면 하단에서 약간 위에 출력
+        
+        # 각 문자의 위치에 맞게 밑줄과 텍스트 렌더링
+        for index in range(len(current_word)):
+        # 밑줄 그리기
+            pygame.draw.line(
+                screen,
+                TEXT_COLOR,
+                (underline_x + index * 50, underline_y),  # 밑줄 시작점
+                (underline_x + index * 50 + 40, underline_y),  # 밑줄 끝점
+                3  # 선 두께
+            )
+
+            # setWord의 각 알파벳 렌더링 - 위에 올리기
+            if index in range(len(setWord)):  # setWord에 현재 인덱스에 대응하는 문자가 있는 경우
+                char_surface = font.render(setWord[index], True, TEXT_COLOR)
+                # 문자가 밑줄 위에 올 수 있도록 렌더링
+                screen.blit(
+                    char_surface,
+                    (underline_x + index * 50 + (40 - char_surface.get_width()) // 2, underline_y - 30)
+                )
+
+
+    ################예림##############
     # 게임 설명 화면 렌더링
     elif current_state == STATE_HOW:
         start_text, start_text_rect = render_how_screen(screen, font)

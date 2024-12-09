@@ -74,6 +74,13 @@ screen_y = 10
 # 도장판 버튼 위치 (화면 버튼 왼쪽)
 stampBoard_x = screen_x - stampBoard_width - 10
 stampBoard_y = close_y + (close_height - stampBoard_height) // 2
+# 점수 위치 (고정 화면 상단 좌측)
+score_x = 10
+score_y = 10
+# Level 위치 (점수 아래)
+level_x = 10
+level_y = score_y + 30
+
 # 홈 버튼 위치 (고정 화면 왼쪽 하단)
 home_x = 10
 home_y = HEIGHT - home_height - 10
