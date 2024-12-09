@@ -38,7 +38,12 @@ running = True
 ###########예림###############
 sound_status = True
 ##############################
+
 game_status = True
+
+###########태희#############
+screen_status = False
+############################
 
 score = 0
 level = 1
@@ -51,7 +56,7 @@ maxScore = 0
 # 게임 루프
 while running:
     for event in pygame.event.get():
-        running, current_state, sound_status = handle_events(event, current_state, sound_status)
+        running, current_state, sound_status, screen_status = handle_events(event, current_state, sound_status, screen_status)
     screen.fill(BLACK)
 
     # 게임 영역 렌더링
@@ -107,6 +112,7 @@ while running:
     elif current_state == STATE_HOW:
         start_text, start_text_rect = render_how_screen(screen, font)
         screen.blit(start_text, start_text_rect)
+    ##################################
 
     # 홈 버튼 생성   
     if current_state != STATE_HOME:
@@ -137,8 +143,13 @@ while running:
         screen.blit(soundOFF_image, (sound_x, sound_y))
         pygame.mixer.music.pause()
     ###########################
+    #########태희##############
     # 화면 버튼
-    screen.blit(bigScreen_image, (screen_x, screen_y))
+    if screen_status :
+        screen.blit(smallScreen_image, (screen_x, screen_y))
+    else:
+        screen.blit(bigScreen_image, (screen_x, screen_y))
+    ###########################
     # 도장판 버튼
     screen.blit(stampBoard_image, (stampBoard_x, stampBoard_y))
 
