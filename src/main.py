@@ -5,10 +5,12 @@ from constants import *
 from assets import assets_paths
 from game_logic import handle_events
 from HomeScreen import render_home_screen
-from GameScreen import draw_grid
+from GameScreen import draw_grid, draw_character
 from StampScreen import render_stemp_screen
+from GameScreen import TALAconda
 ###############예림##############
 from HowScreen import render_how_screen # 추가된 부분
+from WordClearScreen import render_word_clear_screen
 ################################
 
 # 초기화
@@ -39,14 +41,15 @@ pygame.mixer.music.load(assets_paths["bgm"])
 pygame.mixer.music.play(-1)
 # 초기 상태
 current_state = STATE_HOME
-running = True
+running = True                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
+
+game_status = True
+
+talaconda = TALAconda()
 
 ###########예림###############
 sound_status = True
 ##############################
-
-game_status = True
-
 ###########태희#############
 screen_status = False
 ############################
@@ -83,6 +86,9 @@ while running:
     # 게임
     elif current_state == STATE_GAME:
         draw_grid(game_surface)
+        # 이벤트 전달
+        events = pygame.event.get()
+        draw_character(game_surface, talaconda, events)
         screen.blit(game_surface, (game_area_x, game_area_y))
 
         # 고정화면 좌측 상단에 점수와 레벨 표시
@@ -122,6 +128,11 @@ while running:
     # 게임 설명 화면 렌더링
     elif current_state == STATE_HOW:
         start_text, start_text_rect = render_how_screen(screen, font)
+        screen.blit(start_text, start_text_rect)
+
+    # 도장판 클리어 단어 화면 렌더링
+    elif current_state == STATE_WORD_CLEAR:
+        start_text, start_text_rect = render_word_clear_screen(screen, font)
         screen.blit(start_text, start_text_rect)
     ##################################
 
