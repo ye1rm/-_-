@@ -123,6 +123,11 @@ while running:
     elif current_state == STATE_HOW:
         start_text, start_text_rect = render_how_screen(screen, font)
         screen.blit(start_text, start_text_rect)
+
+        # 도장판 클리어 단어 화면 렌더링
+    elif current_state == STATE_WORD_CLEAR:
+        start_text, start_text_rect = render_word_clear_screen(screen, font)
+        screen.blit(start_text, start_text_rect)
     ##################################
 
     # 홈 버튼 생성   
