@@ -32,6 +32,8 @@ STATE_CLEAR = "clear"
 STATE_WORD_CLEAR = "wordClear"
 STATE_WORD = "word"
 
+scroll_y = 0  # 스크롤 초기화
+scroll_speed = 5  # 스크롤 속도
 
 # 텍스트
 # 제목

@@ -2,14 +2,14 @@
 import pygame
 from constants import *
 
-def handle_events(event, current_state, sound_status, screen_status):
+def handle_events(event, current_state, sound_status, screen_status, scroll_y):
     if event.type == pygame.QUIT:
-        return False, current_state, sound_status
+        return False, current_state, sound_status, screen_status, scroll_y
     if event.type == pygame.MOUSEBUTTONDOWN:
         mouse_x, mouse_y = pygame.mouse.get_pos()
         # 엑스 버튼 클릭 시 종료
         if close_x <= mouse_x <= close_x + close_width and close_y <= mouse_y <= close_y + close_height:
-            return False, current_state, sound_status, screen_status
+            return False, current_state, sound_status, screen_status, scroll_y
         
         # 홈 버튼 클릭 시 
         if home_x <= mouse_x <= home_x + home_width and home_y <= mouse_y <= home_y + home_height:
@@ -43,4 +43,22 @@ def handle_events(event, current_state, sound_status, screen_status):
             if start_button_x <= mouse_x <= start_button_x + button_width and start_button_y+150 <= mouse_y <= start_button_y+150 + button_height:
                 current_state = STATE_GAME  # 상태를 게임으로 변경
 
-    return True, current_state, sound_status, screen_status
+        if current_state == STATE_STAMP: # STAMP 상태일 때
+            # 마우스 휠을 사용한 스크롤
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 4:  # 휠 위로
+                    scroll_y -= 15
+                    print(f"Scroll Up: {scroll_y}")
+                elif event.button == 5:  # 휠 아래로
+                    scroll_y += 15
+                    print(f"Scroll Down: {scroll_y}")
+            # 마우스 드래그로 스크롤
+            if event.type == pygame.MOUSEMOTION:
+                if pygame.mouse.get_pressed()[0]:  # 왼쪽 마우스 버튼 눌렸을 때
+                    scroll_y += event.rel[1]  # 마우스의 수직 이동량만큼 스크롤
+
+            # 스크롤 범위 제한
+            scroll_y = max(scroll_y, 0)  # 화면 상단 고정
+            scroll_y = min(scroll_y, 400)  # 화면 하단 고정 
+
+    return True, current_state, sound_status, screen_status, scroll_y

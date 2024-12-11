@@ -6,6 +6,7 @@ from assets import assets_paths
 from game_logic import handle_events
 from HomeScreen import render_home_screen
 from GameScreen import draw_grid
+from StampScreen import render_stemp_screen
 ###############예림##############
 from HowScreen import render_how_screen # 추가된 부분
 ################################
@@ -27,6 +28,10 @@ game_surface = pygame.Surface((GAME_AREA_WIDTH, GAME_AREA_HEIGHT))
 font = pygame.font.Font(assets_paths["font"], 24)
 game_font = pygame.font.Font(assets_paths["font"], 36)
 game_font.set_bold(True)
+stamp_font = pygame.font.Font(assets_paths["font"], 13)
+stamp_font.set_bold(True)
+stamp_level_font = pygame.font.Font(assets_paths["font"], 20)
+stamp_level_font.set_bold(True)
 
 # BGM 로드
 pygame.mixer.music.load(assets_paths["bgm"])
@@ -54,13 +59,17 @@ setWord = ""
 
 maxScore = 0
 
+scroll_y = 0  
+
+
 # 게임 루프
 while running:
     for event in pygame.event.get():
-        running, current_state, sound_status, screen_status = handle_events(event, current_state, sound_status, screen_status)
+        running, current_state, sound_status, screen_status, scroll_y = handle_events(event, current_state, sound_status, screen_status, scroll_y)
     screen.fill(BLACK)
 
     # 게임 영역 렌더링
+    # 홈
     if current_state == STATE_HOME:
 
         # 화면에 버튼 그리기
@@ -71,6 +80,7 @@ while running:
         screen.blit(explanation_text, explanation_text_rect)
         screen.blit(game_text_surface, game_text_rect)
 
+    # 게임
     elif current_state == STATE_GAME:
         draw_grid(game_surface)
         screen.blit(game_surface, (game_area_x, game_area_y))
@@ -118,12 +128,14 @@ while running:
     # 홈 버튼 생성   
     if current_state != STATE_HOME:
         screen.blit(home_image, (home_x, home_y))
-
+    
+    # 도장판
     if current_state == STATE_STAMP:
         game_surface.fill(LIGHT_GREEN)
+        render_stemp_screen(game_surface, stamp_font, stamp_level_font, scroll_y)
 
+        # 최고 점수 출력
         maxScore_text_surface = font.render(f"최고 점수: {maxScore}", True, TEXT_COLOR)
-        
         maxScore_text_width, maxScore_text_height = maxScore_text_surface.get_size()
         maxScore_text_x = WIDTH - maxScore_text_width - 20  # 오른쪽에서 20px 간격
         maxScore_text_y = HEIGHT - maxScore_text_height - 20  # 하단에서 20px 간격

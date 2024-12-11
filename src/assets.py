@@ -9,6 +9,7 @@ ASSETS_DIR = os.path.join(PROJECT_DIR, "assets")  # assets 폴더
 ICON_DIR = os.path.join(ASSETS_DIR, "Icon")  # Icon 폴더
 FONT_DIR = os.path.join(ASSETS_DIR, "fonts")  # fonts 폴더
 BGM_DIR = os.path.join(ASSETS_DIR, "Bgm")  # Bgm 폴더
+MAIN_FILE = os.path.join(BASE_DIR, "main.py")  # src 폴더의 절대 경로
 
 # 에셋 경로
 assets_paths = {
