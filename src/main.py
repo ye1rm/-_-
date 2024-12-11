@@ -1,5 +1,6 @@
 #main.py
 import pygame
+import os
 from constants import *
 from assets import assets_paths
 from game_logic import handle_events
