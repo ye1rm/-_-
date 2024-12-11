@@ -1,6 +1,7 @@
 import streamlit as st
 import subprocess
 import os
+import platform
 
 # Streamlit 페이지 설정
 st.set_page_config(page_title="TALA Game", layout="centered")
@@ -26,9 +27,12 @@ TALA는 스네이크 게임 형식을 통해 어린이들이 영단어의 스펠
 # 게임 시작 버튼
 if st.button("🚀 Start Game"):
     try:
+        # 운영체제에 맞는 python 명령어 설정
+        python_cmd = "python3" if platform.system() != "Windows" else "python"
+
         # subprocess로 main.py 실행
-        result = subprocess.run(["python3", "main.py"], cwd="src", capture_output=True, text=True)
-        
+        result = subprocess.run([python_cmd, "main.py"], cwd="src", capture_output=True, text=True)
+
         if result.returncode == 0:
             st.success("🎉 게임이 성공적으로 시작되었습니다! 🎉")
         else:
