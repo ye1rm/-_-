@@ -24,6 +24,7 @@ assets_paths = {
     "normal_face": os.path.join(ICON_DIR, "normal_face.png"),
     "alphabet_face": os.path.join(ICON_DIR, "alphabet_face.png"),
     "collision_face": os.path.join(ICON_DIR, "collision_face.png"),
+    "body" : os.path.join(ICON_DIR, "body.png"),
     "font": os.path.join(FONT_DIR, "Ramche.ttf"),
     "bgm": os.path.join(BGM_DIR, "sound-k-117217.mp3"),
 }
