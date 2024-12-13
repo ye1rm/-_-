@@ -64,7 +64,7 @@ voice_image, voice_width, voice_height = load_and_scale_image(assets_paths["voic
 # 캐릭터 이미지
 normal_face_image = pygame.transform.scale(
         pygame.image.load(assets_paths["normal_face"]),
-        (CELL_SIZE, CELL_SIZE) 
+        (CELL_SIZE+3, CELL_SIZE+3) 
     )
 body_image = pygame.transform.scale(
         pygame.image.load(assets_paths["body"]),
