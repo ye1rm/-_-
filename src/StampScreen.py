@@ -3,7 +3,7 @@ from LevelWords import *
 
 # 레벨별 버튼 그리기
 def draw_level_buttons(surface, level_words, level_start_x, level_start_y, font):
-    button_radius = 40  # 동그라미 버튼의 반지름
+    button_radius = 50  # 동그라미 버튼의 반지름
     offset_x = 40  # 버튼 사이의 X 간격
     offset_y = 40  # 버튼 사이의 Y 간격
 
@@ -38,23 +38,23 @@ def render_stemp_screen(surface, stamp_font, font, scroll_y):
         surface.blit(level_surface, (x, y))
 
     # Level 1
-    level_start_x = 135
+    level_start_x = 140
     level_start_y = 50 - scroll_y  # 스크롤에 맞게 Y 위치 조정
-    render_level_text(1, level_start_x - 60, level_start_y - 15)  
+    render_level_text(1, level_start_x - 60, level_start_y - 30)  
     draw_level_buttons(surface, level_1_words, level_start_x, level_start_y + 60, stamp_font)
 
     # Level 2
-    level_start_y += 260  # LEVEL 1과 LEVEL 2 사이의 간격
-    render_level_text(2, level_start_x - 60, level_start_y - 15)  
+    level_start_y += 300  # LEVEL 1과 LEVEL 2 사이의 간격
+    render_level_text(2, level_start_x - 60, level_start_y - 30)  
     draw_level_buttons(surface, level_2_words, level_start_x, level_start_y + 60, stamp_font)
 
     # Level 3
-    level_start_y += 260  # LEVEL 2와 LEVEL 3 사이의 간격
-    render_level_text(3, level_start_x - 60, level_start_y - 15)  
+    level_start_y += 300  # LEVEL 2와 LEVEL 3 사이의 간격
+    render_level_text(3, level_start_x - 60, level_start_y - 30)  
     draw_level_buttons(surface, level_3_words, level_start_x, level_start_y + 60, stamp_font)
 
     # Level 4
-    level_start_y += 260  # LEVEL 3과 LEVEL 4 사이의 간격
-    render_level_text(4, level_start_x - 60, level_start_y - 15)  
+    level_start_y += 300  # LEVEL 3과 LEVEL 4 사이의 간격
+    render_level_text(4, level_start_x - 60, level_start_y - 30)  
     draw_level_buttons(surface, level_4_words, level_start_x, level_start_y + 60, stamp_font)
     

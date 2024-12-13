@@ -29,9 +29,9 @@ game_surface = pygame.Surface((GAME_AREA_WIDTH, GAME_AREA_HEIGHT))
 font = pygame.font.Font(assets_paths["font"], 24)
 game_font = pygame.font.Font(assets_paths["font"], 36)
 game_font.set_bold(True)
-stamp_font = pygame.font.Font(assets_paths["font"], 13)
+stamp_font = pygame.font.Font(assets_paths["font"], 17)
 stamp_font.set_bold(True)
-stamp_level_font = pygame.font.Font(assets_paths["font"], 20)
+stamp_level_font = pygame.font.Font(assets_paths["font"], 22)
 stamp_level_font.set_bold(True)
 
 # BGM 로드
