@@ -5,9 +5,8 @@ from constants import *
 from assets import assets_paths
 from game_logic import handle_events
 from HomeScreen import render_home_screen
-from GameScreen import draw_grid, draw_character
+from GameScreen import draw_grid, game_start
 from StampScreen import render_stemp_screen
-from GameScreen import TALAconda
 ###############예림##############
 from HowScreen import render_how_screen # 추가된 부분
 from WordClearScreen import render_word_clear_screen
@@ -45,24 +44,24 @@ running = True
 
 game_status = True
 
-talaconda = TALAconda()
+# 게임 초기 설정
+clock = pygame.time.Clock()
+score = 0
+level = 1
+current_word = ""
+getWord = ""
+setWord = ""
+maxScore = 0
+
+# 스크롤 초기 설정
+scroll_y = 0 
 
 ###########예림###############
 sound_status = True
 ##############################
 ###########태희#############
 screen_status = False
-############################
-
-score = 0
-level = 1
-current_word = ""
-getWord = ""
-setWord = ""
-
-maxScore = 0
-
-scroll_y = 0  
+############################ 
 
 
 # 게임 루프
@@ -85,11 +84,13 @@ while running:
 
     # 게임
     elif current_state == STATE_GAME:
-        draw_grid(game_surface)
-        # 이벤트 전달
-        events = pygame.event.get()
-        draw_character(game_surface, talaconda, events)
-        screen.blit(game_surface, (game_area_x, game_area_y))
+        draw_grid(game_surface)  # 게임 그리드 그리기
+        game_start(game_surface)  # 게임 실행
+        
+        clock.tick(FPS)
+        
+        # 게임 화면을 메인 화면에 렌더링
+        screen.blit(game_surface, (game_area_x, game_area_y))  # game_surface를 screen에 복사
 
         # 고정화면 좌측 상단에 점수와 레벨 표시
         score_surface = font.render(f"Score: {maxScore}", True, TEXT_COLOR)
@@ -142,7 +143,6 @@ while running:
     
     # 도장판
     if current_state == STATE_STAMP:
-        game_surface.fill(LIGHT_GREEN)
         render_stemp_screen(game_surface, stamp_font, stamp_level_font, scroll_y)
 
         # 최고 점수 출력

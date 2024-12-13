@@ -3,7 +3,7 @@ import pygame
 from assets import load_and_scale_image, assets_paths
 
 # 고정 화면 크기
-CELL_SIZE = 45
+CELL_SIZE = 50
 GRID_WIDTH = 20
 GRID_HEIGHT = 20
 WIDTH = CELL_SIZE * GRID_WIDTH
@@ -32,9 +32,6 @@ STATE_CLEAR = "clear"
 STATE_WORD_CLEAR = "wordClear"
 STATE_WORD = "word"
 
-scroll_y = 0  # 스크롤 초기화
-scroll_speed = 5  # 스크롤 속도
-
 # 텍스트
 # 제목
 tittle_text = "The Alphabet-Loving Anaconda"
@@ -62,6 +59,22 @@ stampBoard_image, stampBoard_width, stampBoard_height = load_and_scale_image(ass
 home_image, home_width, home_height = load_and_scale_image(assets_paths["home"], 0.07)
 # 음성 지원
 voice_image, voice_width, voice_height = load_and_scale_image(assets_paths["voice"], 0.07)
+
+# 캐릭터 이미지
+normal_face_image = pygame.transform.scale(
+        pygame.image.load(assets_paths["normal_face"]),
+        (CELL_SIZE, CELL_SIZE) 
+    )
+body_image = pygame.transform.scale(
+        pygame.image.load(assets_paths["body"]),
+        (CELL_SIZE, CELL_SIZE)
+    )
+
+# 이동 속도 조정
+MOVE_DELAY = 200
+
+#프레임
+FPS = 60
 
 # 버튼 위치
 # 엑스 버튼 위치 (고정 화면 상단 우측)
