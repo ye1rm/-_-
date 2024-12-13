@@ -13,6 +13,8 @@ direction = "RIGHT"
 getWord = ""
 
 last_move_time = 0
+collision = False
+levelScore = 0
 
 letter_positions = [] # 알파벳의 위치를 저장할 리스트
 excluded_positions = [] # tala의 위치를 저장할 리스트
@@ -41,6 +43,7 @@ def rotate_face(face, direction):
 
 # 스네이크 이동
 def move(talaconda, direction):
+    global collision
     # 머리 이동
     head = talaconda[0].copy()
     if direction == "LEFT":
@@ -54,7 +57,9 @@ def move(talaconda, direction):
     
     # 새로운 머리 추가
     talaconda.insert(0, head)
-    talaconda.pop()
+
+    if collision == False:
+        talaconda.pop()
 
 def render_talaconda(game_surface):
     global talaconda
@@ -132,6 +137,8 @@ def draw_random_letters(game_surface, font, current_word, current_index, letter_
 def check_collision_with_buttons(game_surface, font, letter_positions, current_word, score, setWord, current_index):
     global talaconda
     global getWord
+    global levelScore
+
     head = talaconda[0]
     head_rect = pygame.Rect(head["x"], head["y"], CELL_SIZE, CELL_SIZE)  # 타라콘다 머리를 Rect로 감쌈
     # letter_positions에서 충돌한 알파벳을 찾아 처리
@@ -148,8 +155,11 @@ def check_collision_with_buttons(game_surface, font, letter_positions, current_w
                     draw_random_letters(game_surface, font, current_word, current_index, letter_positions, excluded_positions)
                 return True, score, setWord, current_index  # 충돌 성공 반환
             else:
-                getWord += letter
-                return False, score, setWord, current_index  # 글자가 틀린 경우 False 반환
+                setWord = ""
+                score = levelScore
+                current_index = 0
+                letter_positions.clear()
+                draw_random_letters(game_surface, font, current_word, current_index, letter_positions, excluded_positions)
 
     return False, score, setWord, current_index  # 충돌하지 않은 경우
 
@@ -162,6 +172,7 @@ def game_start(game_surface, current_word, setWord, level, score, letter_positio
     global last_move_time
     global direction
     global current_face
+    global levelScore
 
     # 방향 전환 처리
     keys = pygame.key.get_pressed()
@@ -184,6 +195,7 @@ def game_start(game_surface, current_word, setWord, level, score, letter_positio
         if current_word == setWord:  # 모든 글자를 맞춘 경우
             current_index = 0  # 인덱스 초기화
             level += 1
+            levelScore = score
             current_word = get_current_word(level)  # 다음 단어 가져오기
             setWord = ""
 
