@@ -1,6 +1,8 @@
 # GameScreen.py
 import pygame
+import random
 from constants import *
+from LevelWords import *
 
 # TALAconda 초기 설정
 talaconda = [{"x": 5 * CELL_SIZE, "y": 5 * CELL_SIZE}] # 초기 위치
@@ -57,7 +59,19 @@ def render_talaconda(game_surface, talaconda, current_face, direction):
         else:  # 몸통
             game_surface.blit(body_image, (segment["x"], segment["y"]))
 
-# 게임 화면에 캐릭터 추가
+def get_current_word(level):
+    # level 값에 따라 단어 리스트 선택
+    if level == 1:
+        current_word = random.choice(level_1_words)[0]  # 영단어만 선택
+    elif level == 2:
+        current_word = random.choice(level_2_words)[0]
+    elif level == 3:
+        current_word = random.choice(level_3_words)[0]
+    elif level == 4:
+        current_word = random.choice(level_4_words)[0]
+    return current_word 
+
+# 게임 시작
 def game_start(game_surface):
     current_time = pygame.time.get_ticks() # 현재 시간
 

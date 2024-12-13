@@ -5,7 +5,7 @@ from constants import *
 from assets import assets_paths
 from game_logic import handle_events
 from HomeScreen import render_home_screen
-from GameScreen import draw_grid, game_start
+from GameScreen import game_start, get_current_word
 from StampScreen import render_stemp_screen
 ###############예림##############
 from HowScreen import render_how_screen # 추가된 부분
@@ -84,7 +84,8 @@ while running:
 
     # 게임
     elif current_state == STATE_GAME:
-        draw_grid(game_surface)  # 게임 그리드 그리기
+        if current_word == "":
+            current_word = get_current_word(level)
         game_start(game_surface)  # 게임 실행
         
         clock.tick(FPS)
