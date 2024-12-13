@@ -1,4 +1,4 @@
-# words.py
+# LevelWords.py
 ######홍성도######
 level_1_words = [
     ("body", "신체"),

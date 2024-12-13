@@ -5,9 +5,8 @@ from constants import *
 from assets import assets_paths
 from game_logic import handle_events
 from HomeScreen import render_home_screen
-from GameScreen import draw_grid, draw_character
+from GameScreen import game_start, get_current_word, draw_random_letters, render_talaconda
 from StampScreen import render_stemp_screen
-from GameScreen import TALAconda
 ###############예림##############
 from HowScreen import render_how_screen # 추가된 부분
 from WordClearScreen import render_word_clear_screen
@@ -30,9 +29,9 @@ game_surface = pygame.Surface((GAME_AREA_WIDTH, GAME_AREA_HEIGHT))
 font = pygame.font.Font(assets_paths["font"], 24)
 game_font = pygame.font.Font(assets_paths["font"], 36)
 game_font.set_bold(True)
-stamp_font = pygame.font.Font(assets_paths["font"], 13)
+stamp_font = pygame.font.Font(assets_paths["font"], 17)
 stamp_font.set_bold(True)
-stamp_level_font = pygame.font.Font(assets_paths["font"], 20)
+stamp_level_font = pygame.font.Font(assets_paths["font"], 22)
 stamp_level_font.set_bold(True)
 
 # BGM 로드
@@ -45,24 +44,26 @@ running = True
 
 game_status = True
 
-talaconda = TALAconda()
+# 게임 초기 설정
+clock = pygame.time.Clock()
+letter_positions = [] # 알파벳의 위치를 저장할 리스트
+excluded_positions = [] # tala의 위치를 저장할 리스트
+score = 0
+level = 1
+current_word = ""
+current_index = 0
+setWord = ""
+maxScore = 0
+
+# 스크롤 초기 설정
+scroll_y = 0 
 
 ###########예림###############
 sound_status = True
 ##############################
 ###########태희#############
 screen_status = False
-############################
-
-score = 0
-level = 1
-current_word = ""
-getWord = ""
-setWord = ""
-
-maxScore = 0
-
-scroll_y = 0  
+############################ 
 
 
 # 게임 루프
@@ -85,14 +86,25 @@ while running:
 
     # 게임
     elif current_state == STATE_GAME:
-        draw_grid(game_surface)
-        # 이벤트 전달
-        events = pygame.event.get()
-        draw_character(game_surface, talaconda, events)
-        screen.blit(game_surface, (game_area_x, game_area_y))
+        if current_word == "":
+            current_word = get_current_word(level)
+            letter_positions.clear()
+ 
+        setWord, current_word, current_index, level, score = game_start(
+            game_surface, current_word, setWord, level, score, letter_positions, current_index, font
+            )  # 게임 실행
+        
+        # 캐릭터 및 알파벳 그리기
+        render_talaconda(game_surface)
+        draw_random_letters(game_surface, font, current_word, current_index, letter_positions, excluded_positions)
+
+        clock.tick(FPS)
+        
+        # 게임 화면을 메인 화면에 렌더링
+        screen.blit(game_surface, (game_area_x, game_area_y))  # game_surface를 screen에 복사
 
         # 고정화면 좌측 상단에 점수와 레벨 표시
-        score_surface = font.render(f"Score: {maxScore}", True, TEXT_COLOR)
+        score_surface = font.render(f"Score: {score}", True, TEXT_COLOR)
         level_surface = font.render(f"Level {level} : {current_word}", True, TEXT_COLOR)
         
         # 점수와 레벨을 화면에 출력
@@ -142,7 +154,6 @@ while running:
     
     # 도장판
     if current_state == STATE_STAMP:
-        game_surface.fill(LIGHT_GREEN)
         render_stemp_screen(game_surface, stamp_font, stamp_level_font, scroll_y)
 
         # 최고 점수 출력
@@ -177,6 +188,6 @@ while running:
     # 도장판 버튼
     screen.blit(stampBoard_image, (stampBoard_x, stampBoard_y))
 
-    pygame.display.update()
+    pygame.display.flip()
 
 pygame.quit()

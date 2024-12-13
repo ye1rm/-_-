@@ -15,7 +15,7 @@ HEIGHT = CELL_SIZE * GRID_HEIGHT
 screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.NOFRAME)
 pygame.display.set_caption("Fixed Frame TALA Game")
 
-# 이미지 로드 및 크기 조정
+# 이미지 로드 및 크기 조정 1,2
 normal_face = pygame.transform.scale(pygame.image.load("C:/Users/user/Desktop/TALA/TALA/assets/Icon/normal_face.png"), (80, 80))
 alphabet_face = pygame.transform.scale(pygame.image.load("C:/Users/user/Desktop/TALA/TALA/assets/Icon/alphabet_face.png"), (80, 80))
 collision_face = pygame.transform.scale(pygame.image.load("C:/Users/user/Desktop/TALA/TALA/assets/Icon/colllision_face.png"), (80, 80))
@@ -26,8 +26,8 @@ WHITE = (255, 255, 255)
 GREEN = (0, 255, 0)
 RED = (255, 0, 0)
 
-# 스네이크 초기 설정
-snake = [{"x": 5 * CELL_SIZE, "y": 5 * CELL_SIZE}]  # 스네이크 초기 위치
+# 스네이크 초기 설정 3
+talaconda = [{"x": 5 * CELL_SIZE, "y": 5 * CELL_SIZE}]  # 스네이크 초기 위치
 direction = "RIGHT"  # 초기 이동 방향
 current_face = normal_face  # 초기 머리 상태
 
@@ -85,7 +85,7 @@ while running:
         last_move_time = current_time  # 마지막 이동 시간 갱신
 
         # 머리 이동
-        head = snake[0].copy()
+        head = talaconda[0].copy()
         if direction == "LEFT":
             head["x"] -= CELL_SIZE
         if direction == "RIGHT":
@@ -96,7 +96,7 @@ while running:
             head["y"] += CELL_SIZE
 
         # 새로운 머리를 추가
-        snake.insert(0, head)
+        talaconda.insert(0, head)
 
         # 먹이와 충돌 확인
         if head["x"] == alphabet["x"] and head["y"] == alphabet["y"]:
@@ -105,12 +105,12 @@ while running:
             alphabet["x"] = random.randint(0, GRID_WIDTH - 1) * CELL_SIZE
             alphabet["y"] = random.randint(0, GRID_HEIGHT - 1) * CELL_SIZE
         else:
-            snake.pop()  # 먹이를 먹지 않았으면 꼬리 제거
+            talaconda.pop()  # 먹이를 먹지 않았으면 꼬리 제거
 
         # 충돌 판정
         if (
             head["x"] < 0 or head["x"] >= WIDTH or head["y"] < 0 or head["y"] >= HEIGHT
-            or head in snake[1:]  # 자기 몸과 충돌
+            or head in talaconda[1:]  # 자기 몸과 충돌
         ):
             current_face = collision_face
             running = False
@@ -126,7 +126,7 @@ while running:
     pygame.draw.rect(screen, GREEN, (alphabet["x"], alphabet["y"], CELL_SIZE, CELL_SIZE))
 
     # 스네이크 그리기 (머리는 이미지, 몸통도 이미지)
-    for i, segment in enumerate(snake):
+    for i, segment in enumerate(talaconda):
         if i == 0:  # 머리
             rotated_face = rotate_face(current_face, direction)
             offset = (80 - CELL_SIZE) // 2  # 머리 이미지 위치 조정
@@ -138,5 +138,5 @@ while running:
     score_text = font.render(f"Score: {score}", True, RED)
     screen.blit(score_text, (10, 10))
 
-    pygame.display.flip()
+    pygame.display.update()
     clock.tick(FPS)  # 프레임 고정
