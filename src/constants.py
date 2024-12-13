@@ -21,6 +21,7 @@ TEXT_COLOR = (255, 255, 255) # 흰색
 LIGHT_GREEN = pygame.Color("#aad750")
 DARK_GREEN = pygame.Color("#a2d148")
 YELLOW = pygame.Color("#ffd400")
+BTN_COLOR = (255, 0, 0)
 
 # 화면 상태 정의
 STATE_HOME = "home"
@@ -74,7 +75,7 @@ body_image = pygame.transform.scale(
 MOVE_DELAY = 200
 
 #프레임
-FPS = 60
+FPS = 30
 
 # 버튼 위치
 # 엑스 버튼 위치 (고정 화면 상단 우측)

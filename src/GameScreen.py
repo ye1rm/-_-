@@ -1,6 +1,7 @@
 # GameScreen.py
 import pygame
 import random
+import string
 from constants import *
 from LevelWords import *
 
@@ -10,6 +11,9 @@ current_face = normal_face_image
 direction = "RIGHT"
 
 last_move_time = 0
+
+letter_positions = [] # 알파벳의 위치를 저장할 리스트
+excluded_positions = [] # tala의 위치를 저장할 리스트
 
 # 게임 화면에 그리드 그리기
 def draw_grid(game_surface):
@@ -50,7 +54,11 @@ def move(talaconda, direction):
     talaconda.insert(0, head)
     talaconda.pop()
 
-def render_talaconda(game_surface, talaconda, current_face, direction):
+def render_talaconda(game_surface):
+    global talaconda
+    global current_face
+    global direction
+
     for i, segment in enumerate(talaconda):
         if i == 0:  # 머리
             rotated_face = rotate_face(current_face, direction)
@@ -71,17 +79,89 @@ def get_current_word(level):
         current_word = random.choice(level_4_words)[0]
     return current_word 
 
+# 랜덤한 알파벳 생성 (a부터 z까지 중에서 3개 선택)
+def generate_random_letters(num):
+    return [random.choice(string.ascii_lowercase) for _ in range(num)]
+
+# 게임 화면에 랜덤 문자 배치
+def draw_random_letters(game_surface, font, current_word, current_index, letter_positions, excluded_positions):
+    # 이미 알파벳이 배치된 위치를 추적하기 위한 집합(set)
+    used_positions = set()
+
+    # "tala"의 머리 및 몸통 위치를 excluded_positions에 추가
+    for segment in talaconda:
+        head_position = (segment["x"], segment["y"])
+        excluded_positions.append(head_position)
+
+    if not letter_positions:  # 새로운 알파벳을 생성
+        random_letters = generate_random_letters(3)  # 랜덤으로 알파벳 3개 생성
+        all_letters = [current_word[current_index]] + random_letters  # 현재 단어의 i번째 글자 + 랜덤 알파벳
+
+        # 각 알파벳을 랜덤한 위치에 배치
+        for letter in all_letters:
+            while True:
+                # 랜덤 위치 계산 (중복 및 제외된 위치를 피함)
+                x = random.randint(0, GAME_AREA_WIDTH // CELL_SIZE - 1) * CELL_SIZE
+                y = random.randint(0, GAME_AREA_HEIGHT // CELL_SIZE - 1) * CELL_SIZE
+                position = (x, y)
+
+                # 제외된 위치와 중복되지 않으면 위치를 사용
+                if position not in used_positions and position not in excluded_positions:
+                    letter_positions.append((letter, x, y))  # 알파벳과 위치 저장
+                    used_positions.add(position)
+                    break  # 중복되지 않는 위치를 찾으면 루프 종료
+
+    # 기존의 알파벳 위치에 그리기
+    for letter, x, y in letter_positions:
+        # 셀의 중앙 좌표 계산
+        center_x = x + CELL_SIZE // 2
+        center_y = y + CELL_SIZE // 2
+
+        # 동그라미 배경 그리기
+        pygame.draw.circle(game_surface, BTN_COLOR, (center_x , center_y), CELL_SIZE // 2)
+
+        # 알파벳을 셀 가운데에 위치시키기
+        letter_surface = font.render(letter, True, TEXT_COLOR)  # 알파벳 렌더링
+        x_centered = center_x - letter_surface.get_width() // 2
+        y_centered = center_y - letter_surface.get_height() // 2
+
+        # 알파벳을 배경 중앙에 그리기
+        game_surface.blit(letter_surface, (x_centered, y_centered))
+
+def check_collision_with_buttons(game_surface, font, letter_positions, current_word, score, setWord, current_index):
+    global talaconda
+
+    # letter_positions에서 충돌한 알파벳을 찾아 처리
+    for i, (letter, x, y) in enumerate(letter_positions):
+        button_position = (x, y)
+        head = talaconda[0].copy()
+
+        # **그리드 셀 좌표 단위로 충돌 검사**
+        if head["x"] == button_position[0] and head["y"] == button_position[1]: # 머리와 버튼 위치 비교
+            if letter == current_word[current_index]:  # 현재 단어의 i번째 글자와 일치하면
+                setWord += letter  # setWord에도 추가 (맞춘 글자 누적)
+                score += 1  # 점수 증가
+                current_index += 1  # 다음 글자로 이동
+                letter_positions.clear()
+                if current_index < len(current_word):
+                    draw_random_letters(game_surface, font, current_word, current_index, letter_positions, excluded_positions)
+                return True, score, setWord, current_index  # 충돌 성공 반환
+            else:
+                return False, score, setWord, current_index  # 글자가 틀린 경우 False 반환
+
+    return False, score, setWord, current_index  # 충돌하지 않은 경우
+
+
 # 게임 시작
-def game_start(game_surface):
-    current_time = pygame.time.get_ticks() # 현재 시간
+def game_start(game_surface, current_word, setWord, level, score, letter_positions, current_index, font):
+    draw_grid(game_surface)
+    current_time = pygame.time.get_ticks()
 
     global last_move_time
     global direction
     global current_face
 
-    draw_grid(game_surface)
-
-    # 키보드 입력 처리 (방향 전환)
+    # 방향 전환 처리
     keys = pygame.key.get_pressed()
     if keys[pygame.K_LEFT] and direction != "RIGHT":
         direction = "LEFT"
@@ -97,6 +177,20 @@ def game_start(game_surface):
         last_move_time = current_time
         move(talaconda, direction)
 
-    # 캐릭터 그리기
-    render_talaconda(game_surface, talaconda, current_face, direction)
+    # 충돌 처리
+    collision, score, setWord, current_index = check_collision_with_buttons(
+        game_surface, font, letter_positions, current_word, score, setWord, current_index
+    )
+
+    # 충돌 후 알파벳 및 상태 갱신
+    if collision:
+        if current_word == setWord:  # 모든 글자를 맞춘 경우
+            current_index = 0  # 인덱스 초기화
+            level += 1
+            current_word = get_current_word(level)  # 다음 단어 가져오기
+            setWord = ""
+
+    return setWord, current_word, current_index, level, score
+
+
 

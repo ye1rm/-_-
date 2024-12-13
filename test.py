@@ -138,5 +138,5 @@ while running:
     score_text = font.render(f"Score: {score}", True, RED)
     screen.blit(score_text, (10, 10))
 
-    pygame.display.flip()
+    pygame.display.update()
     clock.tick(FPS)  # 프레임 고정
