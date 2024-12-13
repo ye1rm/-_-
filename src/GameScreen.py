@@ -10,6 +10,8 @@ talaconda = [{"x": 5 * CELL_SIZE, "y": 5 * CELL_SIZE}] # 초기 위치
 current_face = normal_face_image
 direction = "RIGHT"
 
+getWord = ""
+
 last_move_time = 0
 
 letter_positions = [] # 알파벳의 위치를 저장할 리스트
@@ -62,8 +64,7 @@ def render_talaconda(game_surface):
     for i, segment in enumerate(talaconda):
         if i == 0:  # 머리
             rotated_face = rotate_face(current_face, direction)
-            offset = (CELL_SIZE) # 머리 이미지 위치 조정
-            game_surface.blit(rotated_face, (segment["x"] - offset, segment["y"] - offset))
+            game_surface.blit(rotated_face, (segment["x"], segment["y"]))
         else:  # 몸통
             game_surface.blit(body_image, (segment["x"], segment["y"]))
 
@@ -130,14 +131,14 @@ def draw_random_letters(game_surface, font, current_word, current_index, letter_
 
 def check_collision_with_buttons(game_surface, font, letter_positions, current_word, score, setWord, current_index):
     global talaconda
-
+    global getWord
+    head = talaconda[0]
+    head_rect = pygame.Rect(head["x"], head["y"], CELL_SIZE, CELL_SIZE)  # 타라콘다 머리를 Rect로 감쌈
     # letter_positions에서 충돌한 알파벳을 찾아 처리
     for i, (letter, x, y) in enumerate(letter_positions):
-        button_position = (x, y)
-        head = talaconda[0].copy()
+        letter_rect = pygame.Rect(x, y, CELL_SIZE, CELL_SIZE)
 
-        # **그리드 셀 좌표 단위로 충돌 검사**
-        if head["x"] == button_position[0] and head["y"] == button_position[1]: # 머리와 버튼 위치 비교
+        if head_rect.colliderect(letter_rect): # 머리와 버튼 위치 비교
             if letter == current_word[current_index]:  # 현재 단어의 i번째 글자와 일치하면
                 setWord += letter  # setWord에도 추가 (맞춘 글자 누적)
                 score += 1  # 점수 증가
@@ -147,6 +148,7 @@ def check_collision_with_buttons(game_surface, font, letter_positions, current_w
                     draw_random_letters(game_surface, font, current_word, current_index, letter_positions, excluded_positions)
                 return True, score, setWord, current_index  # 충돌 성공 반환
             else:
+                getWord += letter
                 return False, score, setWord, current_index  # 글자가 틀린 경우 False 반환
 
     return False, score, setWord, current_index  # 충돌하지 않은 경우
@@ -172,11 +174,6 @@ def game_start(game_surface, current_word, setWord, level, score, letter_positio
     if keys[pygame.K_DOWN] and direction != "UP":
         direction = "DOWN"
 
-    # 스네이크 이동
-    if current_time - last_move_time > MOVE_DELAY:
-        last_move_time = current_time
-        move(talaconda, direction)
-
     # 충돌 처리
     collision, score, setWord, current_index = check_collision_with_buttons(
         game_surface, font, letter_positions, current_word, score, setWord, current_index
@@ -189,6 +186,13 @@ def game_start(game_surface, current_word, setWord, level, score, letter_positio
             level += 1
             current_word = get_current_word(level)  # 다음 단어 가져오기
             setWord = ""
+
+    # 스네이크 이동
+    if current_time - last_move_time > MOVE_DELAY:
+        last_move_time = current_time
+        move(talaconda, direction)
+    
+    draw_grid(game_surface)
 
     return setWord, current_word, current_index, level, score
 

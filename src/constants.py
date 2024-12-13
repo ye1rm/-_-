@@ -75,7 +75,7 @@ body_image = pygame.transform.scale(
 MOVE_DELAY = 200
 
 #프레임
-FPS = 30
+FPS = 120
 
 # 버튼 위치
 # 엑스 버튼 위치 (고정 화면 상단 우측)
