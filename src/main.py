@@ -95,9 +95,9 @@ while running:
             )  # 게임 실행
         
         # 캐릭터 및 알파벳 그리기
-        render_talaconda(game_surface)
         draw_random_letters(game_surface, font, current_word, current_index, letter_positions, excluded_positions)
-
+        render_talaconda(game_surface)
+        
         clock.tick(FPS)
         
         # 게임 화면을 메인 화면에 렌더링
@@ -188,6 +188,6 @@ while running:
     # 도장판 버튼
     screen.blit(stampBoard_image, (stampBoard_x, stampBoard_y))
 
-    pygame.display.flip()
+    pygame.display.update()
 
 pygame.quit()

@@ -64,7 +64,7 @@ voice_image, voice_width, voice_height = load_and_scale_image(assets_paths["voic
 # 캐릭터 이미지
 normal_face_image = pygame.transform.scale(
         pygame.image.load(assets_paths["normal_face"]),
-        (CELL_SIZE, CELL_SIZE) 
+        (CELL_SIZE+3, CELL_SIZE+3) 
     )
 body_image = pygame.transform.scale(
         pygame.image.load(assets_paths["body"]),
@@ -75,7 +75,7 @@ body_image = pygame.transform.scale(
 MOVE_DELAY = 200
 
 #프레임
-FPS = 30
+FPS = 120
 
 # 버튼 위치
 # 엑스 버튼 위치 (고정 화면 상단 우측)
