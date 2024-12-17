@@ -158,7 +158,6 @@ while running:
         setWord = ""
         current_word = ""
         current_index = 0
-        score = 0
 
     # 홈 버튼 생성   
     if current_state != STATE_HOME:

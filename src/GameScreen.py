@@ -55,6 +55,10 @@ def move(talaconda, direction):
         head["y"] -= CELL_SIZE
     if direction == "DOWN":
         head["y"] += CELL_SIZE
+
+    # 화면 밖으로 나가지 못하도록 경계 설정
+    if head["x"] < 0 or head["x"] >= GAME_AREA_WIDTH or head["y"] < 0 or head["y"] >= GAME_AREA_HEIGHT:
+        return  # 이동하지 않음
     
     # 새로운 머리 추가
     talaconda.insert(0, head)
@@ -153,6 +157,7 @@ def check_collision_with_buttons(game_surface, font, letter_positions, current_w
             if letter == current_word[current_index]:  # 현재 단어의 i번째 글자와 일치하면
                 setWord += letter  # setWord에도 추가 (맞춘 글자 누적)
                 score += 1  # 점수 증가
+                levelScore += 1
                 
                 # 몸길이를 늘림
                 tail = talaconda[-1]  # 현재 꼬리 부분 가져오기
@@ -177,7 +182,7 @@ def check_collision_with_buttons(game_surface, font, letter_positions, current_w
                 return True, score, setWord, current_index  # 충돌 성공 반환
             else:
                 setWord = ""
-                score = levelScore
+                score -= levelScore
                 current_index = 0
 
                 # 몸길이 초기화: 추가된 세그먼트를 제거
@@ -227,8 +232,14 @@ def game_start(game_surface, current_word, setWord, level, score, letter_positio
                 level += 1
             else :
                 level = 1
-            talaconda = [{"x": 5 * CELL_SIZE, "y": 5 * CELL_SIZE}]
+            # 위치만 초기화, 길이는 유지
+            initial_x, initial_y = 5 * CELL_SIZE, 5 * CELL_SIZE
+            for i, segment in enumerate(talaconda):
+                segment["x"] = initial_x - (i * CELL_SIZE)  # 초기 위치 기준으로 i번째 세그먼트 재배치
+                segment["y"] = initial_y
             direction = "RIGHT"
+            added_segments = 0
+            levelScore = 0
             return setWord, current_word, current_index, level, score, current_state
 
     # 스네이크 이동
