@@ -30,12 +30,12 @@ def render_clear_screen(screen, font, score, current_word, current_mean):
         y_pos += line_height
 
     # 발음 재생 버튼 (텍스트와 아이콘 함께 표시)
-    button_width = 300
+    button_width = 200
     button_height = 60
     button_x = WIDTH // 2 - button_width // 2
-    button_y = y_pos + 20
+    button_y = y_pos -20
     button_rect = pygame.Rect(button_x, button_y, button_width, button_height)
-    pygame.draw.rect(screen, LIGHT_GREEN, button_rect)
+    pygame.draw.rect(screen, BLACK, button_rect)
 
     # 텍스트 그리기
     voice_text = font.render("발음 재생", True, TEXT_COLOR)

@@ -34,6 +34,8 @@ stamp_font = pygame.font.Font(assets_paths["font"], 17)
 stamp_font.set_bold(True)
 stamp_level_font = pygame.font.Font(assets_paths["font"], 22)
 stamp_level_font.set_bold(True)
+word_font = pygame.font.Font(assets_paths["font"], 26)
+word_font.set_bold(True)
 
 # BGM 로드
 pygame.mixer.music.load(assets_paths["bgm"])
@@ -60,6 +62,8 @@ maxScore = 0
 # 스크롤 초기 설정
 scroll_y = 0 
 
+next_button_rect = 0
+
 ###########예림###############
 sound_status = True
 ##############################
@@ -71,7 +75,9 @@ screen_status = False
 # 게임 루프
 while running:
     for event in pygame.event.get():
-        running, current_state, sound_status, screen_status, scroll_y = handle_events(event, current_state, sound_status, screen_status, scroll_y)
+        running, current_state, sound_status, screen_status, scroll_y = handle_events(
+            event, current_state, sound_status, screen_status, scroll_y, next_button_rect
+            )
     screen.fill(BLACK)
 
     # 게임 영역 렌더링
@@ -93,7 +99,7 @@ while running:
             letter_positions.clear()
  
         setWord, current_word, current_index, level, score, current_state = game_start(
-            game_surface, current_word, setWord, level, score, letter_positions,excluded_positions, current_index, font, current_state
+            game_surface, current_word, setWord, level, score, letter_positions,excluded_positions, current_index, word_font, current_state
             )  # 게임 실행
         
         clock.tick(FPS)
@@ -149,6 +155,10 @@ while running:
     # 게임 클리어 시.
     elif current_state == STATE_CLEAR:
         button_rect, next_button_rect = render_clear_screen(screen, font, score, current_word, current_mean)
+        setWord = ""
+        current_word = ""
+        current_index = 0
+        score = 0
 
     # 홈 버튼 생성   
     if current_state != STATE_HOME:

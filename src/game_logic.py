@@ -2,7 +2,7 @@
 import pygame
 from constants import *
 
-def handle_events(event, current_state, sound_status, screen_status, scroll_y):
+def handle_events(event, current_state, sound_status, screen_status, scroll_y, next_button_rect):
     if event.type == pygame.QUIT:
         return False, current_state, sound_status, screen_status, scroll_y
     if event.type == pygame.MOUSEBUTTONDOWN:
@@ -42,6 +42,12 @@ def handle_events(event, current_state, sound_status, screen_status, scroll_y):
             # 게임 시작 버튼 클릭 시
             if start_button_x <= mouse_x <= start_button_x + button_width and start_button_y+150 <= mouse_y <= start_button_y+150 + button_height:
                 current_state = STATE_GAME  # 상태를 게임으로 변경
+
+        if current_state == STATE_CLEAR:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                # next 버튼 클릭 시 다음 단어로 진행
+                if next_button_rect.collidepoint(event.pos):
+                    current_state = STATE_GAME
 
         if current_state == STATE_STAMP: # STAMP 상태일 때
             # 마우스 휠을 사용한 스크롤

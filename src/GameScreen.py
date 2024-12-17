@@ -174,7 +174,6 @@ def check_collision_with_buttons(game_surface, font, letter_positions, current_w
                 letter_positions.clear()
                 if current_index < len(current_word):
                     draw_random_letters(game_surface, font, current_word, current_index, letter_positions, excluded_positions)
-                    print(setWord)
                 return True, score, setWord, current_index  # 충돌 성공 반환
             else:
                 setWord = ""
@@ -223,8 +222,13 @@ def game_start(game_surface, current_word, setWord, level, score, letter_positio
     # 충돌 후 알파벳 및 상태 갱신
     if collision:
         if current_word == setWord:  # 모든 글자를 맞춘 경우
-            print("성공!")
             current_state = STATE_CLEAR
+            if (level < 4):
+                level += 1
+            else :
+                level = 1
+            talaconda = [{"x": 5 * CELL_SIZE, "y": 5 * CELL_SIZE}]
+            direction = "RIGHT"
             return setWord, current_word, current_index, level, score, current_state
 
     # 스네이크 이동
