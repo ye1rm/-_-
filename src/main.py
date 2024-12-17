@@ -39,6 +39,7 @@ word_font.set_bold(True)
 
 # BGM 로드
 pygame.mixer.music.load(assets_paths["bgm"])
+pygame.mixer.music.set_volume(0.5) # 배경음악 볼륨 50%로 설정
 
 pygame.mixer.music.play(-1)
 # 초기 상태
@@ -58,6 +59,9 @@ current_mean = ""
 current_index = 0
 setWord = ""
 maxScore = 0
+
+# tts효과음 전용 채널 생성
+effect_channel = pygame.mixer.Channel(1)  # 채널 1번에 tts효과음을 할당
 
 # 스크롤 초기 설정
 scroll_y = 0 

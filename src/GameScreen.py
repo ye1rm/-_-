@@ -4,6 +4,10 @@ import random
 import string
 from constants import *
 from LevelWords import *
+from ttsSound import play_tts_sound
+
+import os
+import pygame.mixer
 
 # TALAconda 초기 설정
 talaconda = [{"x": 5 * CELL_SIZE, "y": 5 * CELL_SIZE}] # 초기 위치
@@ -98,6 +102,7 @@ def generate_random_letters(num):
 
 # 게임 화면에 랜덤 문자 배치
 def draw_random_letters(game_surface, font, current_word, current_index, letter_positions, excluded_positions):
+    excluded_positions.clear()
     # 이미 알파벳이 배치된 위치를 추적하기 위한 집합(set)
     used_positions = set()
 
@@ -154,7 +159,12 @@ def check_collision_with_buttons(game_surface, font, letter_positions, current_w
         letter_rect = pygame.Rect(x, y, CELL_SIZE, CELL_SIZE)
 
         if head_rect.colliderect(letter_rect): # 머리와 버튼 위치 비교
+
+            # 획득한 알파벳 발음 재생
+            play_tts_sound(letter)
+
             if letter == current_word[current_index]:  # 현재 단어의 i번째 글자와 일치하면
+
                 setWord += letter  # setWord에도 추가 (맞춘 글자 누적)
                 score += 1  # 점수 증가
                 levelScore += 1
