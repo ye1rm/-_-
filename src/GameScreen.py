@@ -184,6 +184,7 @@ def check_collision_with_buttons(game_surface, font, letter_positions, current_w
                 setWord = ""
                 score -= levelScore
                 current_index = 0
+                levelScore = 0
 
                 # 몸길이 초기화: 추가된 세그먼트를 제거
                 for _ in range(added_segments):
