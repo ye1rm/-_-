@@ -7,6 +7,7 @@ from game_logic import handle_events
 from HomeScreen import render_home_screen
 from GameScreen import game_start, get_current_word, draw_random_letters, render_talaconda
 from StampScreen import render_stemp_screen
+from ClearScreen import render_clear_screen
 ###############예림##############
 from HowScreen import render_how_screen # 추가된 부분
 from WordClearScreen import render_word_clear_screen
@@ -39,7 +40,7 @@ pygame.mixer.music.load(assets_paths["bgm"])
 
 pygame.mixer.music.play(-1)
 # 초기 상태
-current_state = STATE_HOME
+current_state = STATE_GAME
 running = True                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
 
 game_status = True
@@ -51,6 +52,7 @@ excluded_positions = [] # tala의 위치를 저장할 리스트
 score = 0
 level = 1
 current_word = ""
+current_mean = ""
 current_index = 0
 setWord = ""
 maxScore = 0
@@ -87,16 +89,12 @@ while running:
     # 게임
     elif current_state == STATE_GAME:
         if current_word == "":
-            current_word = get_current_word(level)
+            current_word, current_mean = get_current_word(level,current_word,current_mean)
             letter_positions.clear()
  
-        setWord, current_word, current_index, level, score = game_start(
-            game_surface, current_word, setWord, level, score, letter_positions, current_index, font
+        setWord, current_word, current_index, level, score, current_state = game_start(
+            game_surface, current_word, setWord, level, score, letter_positions,excluded_positions, current_index, font, current_state
             )  # 게임 실행
-        
-        # 캐릭터 및 알파벳 그리기
-        draw_random_letters(game_surface, font, current_word, current_index, letter_positions, excluded_positions)
-        render_talaconda(game_surface)
         
         clock.tick(FPS)
         
@@ -147,6 +145,10 @@ while running:
         start_text, start_text_rect = render_word_clear_screen(screen, font)
         screen.blit(start_text, start_text_rect)
     ##################################
+
+    # 게임 클리어 시.
+    elif current_state == STATE_CLEAR:
+        button_rect, next_button_rect = render_clear_screen(screen, font, score, current_word, current_mean)
 
     # 홈 버튼 생성   
     if current_state != STATE_HOME:
