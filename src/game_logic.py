@@ -2,14 +2,14 @@
 import pygame
 from constants import *
 
-def handle_events(event, current_state, sound_status, screen_status, scroll_y, next_button_rect):
+def handle_events(event, current_state, sound_status, screen_status, scroll_y, next_button_rect, current_word):
     if event.type == pygame.QUIT:
-        return False, current_state, sound_status, screen_status, scroll_y
+        return False, current_state, sound_status, screen_status, scroll_y, current_word
     if event.type == pygame.MOUSEBUTTONDOWN:
         mouse_x, mouse_y = pygame.mouse.get_pos()
         # 엑스 버튼 클릭 시 종료
         if close_x <= mouse_x <= close_x + close_width and close_y <= mouse_y <= close_y + close_height:
-            return False, current_state, sound_status, screen_status, scroll_y
+            return False, current_state, sound_status, screen_status, scroll_y, current_word
         
         # 홈 버튼 클릭 시 
         if home_x <= mouse_x <= home_x + home_width and home_y <= mouse_y <= home_y + home_height:
@@ -47,6 +47,7 @@ def handle_events(event, current_state, sound_status, screen_status, scroll_y, n
             if event.type == pygame.MOUSEBUTTONDOWN:
                 # next 버튼 클릭 시 다음 단어로 진행
                 if next_button_rect.collidepoint(event.pos):
+                    current_word = ""
                     current_state = STATE_GAME
 
         if current_state == STATE_STAMP: # STAMP 상태일 때
@@ -67,4 +68,4 @@ def handle_events(event, current_state, sound_status, screen_status, scroll_y, n
             scroll_y = max(scroll_y, 0)  # 화면 상단 고정
             scroll_y = min(scroll_y, 400)  # 화면 하단 고정 
 
-    return True, current_state, sound_status, screen_status, scroll_y
+    return True, current_state, sound_status, screen_status, scroll_y, current_word
