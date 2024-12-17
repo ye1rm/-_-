@@ -105,7 +105,8 @@ while running:
             letter_positions.clear()
  
         setWord, current_word, current_index, level, score, current_state = game_start(
-            game_surface, current_word, setWord, level, score, letter_positions,excluded_positions, current_index, word_font, current_state
+            game_surface, current_word, setWord, level, score, letter_positions,excluded_positions, current_index, word_font, current_state,
+            effect_channel
             )  # 게임 실행
         
         clock.tick(FPS)
