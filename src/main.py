@@ -80,6 +80,8 @@ while running:
             )
     screen.fill(BLACK)
 
+    if score > maxScore :
+        maxScore = score
     # 게임 영역 렌더링
     # 홈
     if current_state == STATE_HOME:
