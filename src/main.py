@@ -169,6 +169,7 @@ while running:
     # 게임 실패 시.
     elif current_state == STATE_FAIL:
         start_button_rect = render_fail_screen(screen, font, score)
+        score = 0
 
     # 홈 버튼 생성   
     if current_state != STATE_HOME:
