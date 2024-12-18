@@ -1,6 +1,5 @@
 #main.py
 import pygame
-import os
 from constants import *
 from assets import assets_paths
 from game_logic import handle_events
@@ -52,6 +51,7 @@ game_status = True
 clock = pygame.time.Clock()
 letter_positions = [] # 알파벳의 위치를 저장할 리스트
 excluded_positions = [] # tala의 위치를 저장할 리스트
+clear_words = [] # 클리어한 단어 저장할 리스트
 score = 0
 level = 1
 current_word = ""
@@ -159,6 +159,8 @@ while running:
     # 게임 클리어 시.
     elif current_state == STATE_CLEAR:
         button_rect, next_button_rect = render_clear_screen(screen, font, score, current_word, current_mean)
+        if current_word not in clear_words:
+            clear_words.append(current_word)
         setWord = ""
         current_index = 0
 
@@ -168,7 +170,7 @@ while running:
     
     # 도장판
     if current_state == STATE_STAMP:
-        render_stemp_screen(game_surface, stamp_font, stamp_level_font, scroll_y)
+        render_stemp_screen(game_surface, stamp_font, stamp_level_font, scroll_y, clear_words)
 
         # 최고 점수 출력
         maxScore_text_surface = font.render(f"최고 점수: {maxScore}", True, TEXT_COLOR)
