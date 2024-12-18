@@ -5,7 +5,6 @@ import pygame.mixer
 import string
 from constants import *
 from LevelWords import *
-#from ttsSound import play_tts_sound
 from gtts import gTTS
 import os
 
@@ -269,6 +268,19 @@ def game_start(game_surface, current_word, setWord, level, score, letter_positio
             direction = "RIGHT"
             added_segments = 0
             levelScore = 0
+            return setWord, current_word, current_index, level, score, current_state
+
+    head = talaconda[0]
+    for segment in talaconda[1:]:  # 머리를 제외한 몸통 세그먼트와 비교
+        if head["x"] == segment["x"] and head["y"] == segment["y"]:
+            current_state = STATE_FAIL
+            setWord = ""
+            current_word  = ""
+            current_index = 0
+            added_segments = 0
+            levelScore = 0
+            talaconda = [{"x": 5 * CELL_SIZE, "y": 5 * CELL_SIZE}]
+            direction = "RIGHT"
             return setWord, current_word, current_index, level, score, current_state
 
     # 스네이크 이동

@@ -7,6 +7,7 @@ from HomeScreen import render_home_screen
 from GameScreen import game_start, get_current_word, draw_random_letters, render_talaconda
 from StampScreen import render_stemp_screen
 from ClearScreen import render_clear_screen
+from FailScreen import render_fail_screen
 ###############예림##############
 from HowScreen import render_how_screen # 추가된 부분
 from WordClearScreen import render_word_clear_screen
@@ -163,6 +164,10 @@ while running:
             clear_words.append(current_word)
         setWord = ""
         current_index = 0
+    
+    # 게임 실패 시.
+    elif current_state == STATE_FAIL:
+        start_button_rect = render_fail_screen(screen, font, score)
 
     # 홈 버튼 생성   
     if current_state != STATE_HOME:
