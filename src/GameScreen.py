@@ -4,6 +4,10 @@ import random
 import string
 from constants import *
 from LevelWords import *
+from ttsSound import play_tts_sound
+
+import os
+import pygame.mixer
 
 # TALAconda 초기 설정
 talaconda = [{"x": 5 * CELL_SIZE, "y": 5 * CELL_SIZE}] # 초기 위치
@@ -55,6 +59,10 @@ def move(talaconda, direction):
         head["y"] -= CELL_SIZE
     if direction == "DOWN":
         head["y"] += CELL_SIZE
+
+    # 화면 밖으로 나가지 못하도록 경계 설정
+    if head["x"] < 0 or head["x"] >= GAME_AREA_WIDTH or head["y"] < 0 or head["y"] >= GAME_AREA_HEIGHT:
+        return  # 이동하지 않음
     
     # 새로운 머리 추가
     talaconda.insert(0, head)
@@ -76,17 +84,17 @@ def render_talaconda(game_surface):
         else:  # 몸통
             game_surface.blit(body_image, (segment["x"], segment["y"]))
 
-def get_current_word(level):
+def get_current_word(level, current_word, current_mean):
     # level 값에 따라 단어 리스트 선택
     if level == 1:
-        current_word = random.choice(level_1_words)[0]  # 영단어만 선택
+        current_word, current_mean = random.choice(level_1_words)
     elif level == 2:
-        current_word = random.choice(level_2_words)[0]
+        current_word, current_mean = random.choice(level_2_words)
     elif level == 3:
-        current_word = random.choice(level_3_words)[0]
+        current_word, current_mean = random.choice(level_3_words)
     elif level == 4:
-        current_word = random.choice(level_4_words)[0]
-    return current_word 
+        current_word, current_mean = random.choice(level_4_words)
+    return current_word, current_mean
 
 # 랜덤한 알파벳 생성 (a부터 z까지 중에서 3개 선택)
 def generate_random_letters(num):
@@ -94,6 +102,7 @@ def generate_random_letters(num):
 
 # 게임 화면에 랜덤 문자 배치
 def draw_random_letters(game_surface, font, current_word, current_index, letter_positions, excluded_positions):
+    excluded_positions.clear()
     # 이미 알파벳이 배치된 위치를 추적하기 위한 집합(set)
     used_positions = set()
 
@@ -102,7 +111,7 @@ def draw_random_letters(game_surface, font, current_word, current_index, letter_
         head_position = (segment["x"], segment["y"])
         excluded_positions.append(head_position)
 
-    if not letter_positions:  # 새로운 알파벳을 생성
+    if not letter_positions :  # 새로운 알파벳을 생성
         random_letters = generate_random_letters(3)  # 랜덤으로 알파벳 3개 생성
         all_letters = [current_word[current_index]] + random_letters  # 현재 단어의 i번째 글자 + 랜덤 알파벳
 
@@ -137,7 +146,7 @@ def draw_random_letters(game_surface, font, current_word, current_index, letter_
         # 알파벳을 배경 중앙에 그리기
         game_surface.blit(letter_surface, (x_centered, y_centered))
 
-def check_collision_with_buttons(game_surface, font, letter_positions, current_word, score, setWord, current_index):
+def check_collision_with_buttons(game_surface, font, letter_positions, current_word, score, setWord, current_index, effect_channel):
     global talaconda
     global getWord
     global levelScore
@@ -150,9 +159,15 @@ def check_collision_with_buttons(game_surface, font, letter_positions, current_w
         letter_rect = pygame.Rect(x, y, CELL_SIZE, CELL_SIZE)
 
         if head_rect.colliderect(letter_rect): # 머리와 버튼 위치 비교
+
+            # 획득한 알파벳 발음 재생
+            play_tts_sound(letter, effect_channel)
+
             if letter == current_word[current_index]:  # 현재 단어의 i번째 글자와 일치하면
+
                 setWord += letter  # setWord에도 추가 (맞춘 글자 누적)
                 score += 1  # 점수 증가
+                levelScore += 1
                 
                 # 몸길이를 늘림
                 tail = talaconda[-1]  # 현재 꼬리 부분 가져오기
@@ -177,8 +192,9 @@ def check_collision_with_buttons(game_surface, font, letter_positions, current_w
                 return True, score, setWord, current_index  # 충돌 성공 반환
             else:
                 setWord = ""
-                score = levelScore
+                score -= levelScore
                 current_index = 0
+                levelScore = 0
 
                 # 몸길이 초기화: 추가된 세그먼트를 제거
                 for _ in range(added_segments):
@@ -192,10 +208,11 @@ def check_collision_with_buttons(game_surface, font, letter_positions, current_w
 
 
 # 게임 시작
-def game_start(game_surface, current_word, setWord, level, score, letter_positions, current_index, font):
+def game_start(game_surface, current_word, setWord, level, score, letter_positions, excluded_positions, current_index, font, current_state, effect_channel):
     draw_grid(game_surface)
     current_time = pygame.time.get_ticks()
 
+    global talaconda
     global last_move_time
     global direction
     global current_face
@@ -215,18 +232,26 @@ def game_start(game_surface, current_word, setWord, level, score, letter_positio
 
     # 충돌 처리
     collision, score, setWord, current_index = check_collision_with_buttons(
-        game_surface, font, letter_positions, current_word, score, setWord, current_index
+        game_surface, font, letter_positions, current_word, score, setWord, current_index, effect_channel
     )
 
     # 충돌 후 알파벳 및 상태 갱신
     if collision:
         if current_word == setWord:  # 모든 글자를 맞춘 경우
-            current_index = 0  # 인덱스 초기화
-            level += 1
-            levelScore = score
-            current_word = get_current_word(level)  # 다음 단어 가져오기
-            setWord = ""
+            current_state = STATE_CLEAR
+            if (level < 4):
+                level += 1
+            else :
+                level = 1
+            # 위치만 초기화, 길이는 유지
+            initial_x, initial_y = 5 * CELL_SIZE, 5 * CELL_SIZE
+            for i, segment in enumerate(talaconda):
+                segment["x"] = initial_x - (i * CELL_SIZE)  # 초기 위치 기준으로 i번째 세그먼트 재배치
+                segment["y"] = initial_y
+            direction = "RIGHT"
             added_segments = 0
+            levelScore = 0
+            return setWord, current_word, current_index, level, score, current_state
 
     # 스네이크 이동
     if current_time - last_move_time > MOVE_DELAY:
@@ -234,8 +259,11 @@ def game_start(game_surface, current_word, setWord, level, score, letter_positio
         move(talaconda, direction)
     
     draw_grid(game_surface)
+    # 캐릭터 및 알파벳 그리기
+    draw_random_letters(game_surface, font, current_word, current_index, letter_positions, excluded_positions)
+    render_talaconda(game_surface)
 
-    return setWord, current_word, current_index, level, score
+    return setWord, current_word, current_index, level, score, current_state
 
 
 
