@@ -1,8 +1,10 @@
 #game_logic.py
 import pygame
 from constants import *
+from gtts import gTTS
+import os
 
-def handle_events(event, current_state, sound_status, screen_status, scroll_y, next_button_rect, current_word):
+def handle_events(event, current_state, sound_status, screen_status, scroll_y, next_button_rect, current_word, button_rect):
     if event.type == pygame.QUIT:
         return False, current_state, sound_status, screen_status, scroll_y, current_word
     if event.type == pygame.MOUSEBUTTONDOWN:
@@ -49,6 +51,20 @@ def handle_events(event, current_state, sound_status, screen_status, scroll_y, n
                 if next_button_rect.collidepoint(event.pos):
                     current_word = ""
                     current_state = STATE_GAME
+                if button_rect.collidepoint(event.pos): # 발음 재생 버튼 클릭 시
+                    # TTS 기능
+                    tts = gTTS(text=current_word, lang='en')  # 영어로 음성 생성
+                    tts.save("tts.mp3")
+                    try:
+                        sound = pygame.mixer.Sound("tts.mp3")
+                        sound.play()
+
+                        # 음성이 재생되는 동안 기다림
+                        while pygame.mixer.get_busy():
+                            pygame.time.Clock().tick(FPS)
+            
+                    finally:
+                        os.remove("tts.mp3")  # 음성 파일 삭제 (재생이 끝난 후)
 
         if current_state == STATE_STAMP: # STAMP 상태일 때
             # 마우스 휠을 사용한 스크롤

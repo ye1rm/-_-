@@ -9,7 +9,7 @@ from LevelWords import *
 from gtts import gTTS
 import os
 
-# TTS 기능을 GameScreen.py에 추가 (gTTS 사용)
+# TTS 기능
 def play_tts_sound(letter):
     # gTTS로 음성 생성 (MP3 형식)
     tts = gTTS(text=letter, lang='en')  # 영어로 음성 생성
@@ -17,7 +17,7 @@ def play_tts_sound(letter):
 
     try:
         sound = pygame.mixer.Sound("tts.mp3")
-        sound.play()  # 비동기적으로 음성 재생
+        sound.play()
 
         # 음성이 재생되는 동안 기다림
         while pygame.mixer.get_busy():
@@ -271,7 +271,7 @@ def game_start(game_surface, current_word, setWord, level, score, letter_positio
             levelScore = 0
             return setWord, current_word, current_index, level, score, current_state
 
-    # 타라콘다 이동
+    # 스네이크 이동
     if current_time - last_move_time > MOVE_DELAY:
         last_move_time = current_time
         move(talaconda, direction)
@@ -282,6 +282,4 @@ def game_start(game_surface, current_word, setWord, level, score, letter_positio
     render_talaconda(game_surface)
 
     return setWord, current_word, current_index, level, score, current_state
-
-
 
