@@ -14,7 +14,7 @@ def render_fail_screen(screen, font, score):
 
     # 게임 클리어 텍스트
     instructions = [
-        "GAME Over",
+        "GAME OVER",
         f"최종 Score : {score} "
     ]
 

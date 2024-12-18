@@ -274,6 +274,7 @@ def game_start(game_surface, current_word, setWord, level, score, letter_positio
     for segment in talaconda[1:]:  # 머리를 제외한 몸통 세그먼트와 비교
         if head["x"] == segment["x"] and head["y"] == segment["y"]:
             current_state = STATE_FAIL
+            level = 1
             setWord = ""
             current_word  = ""
             current_index = 0

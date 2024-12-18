@@ -4,7 +4,7 @@ from constants import *
 from gtts import gTTS
 import os
 
-def handle_events(event, current_state, sound_status, screen_status, scroll_y, next_button_rect, current_word, button_rect):
+def handle_events(event, current_state, sound_status, screen_status, scroll_y, next_button_rect, current_word, button_rect, start_button_rect):
     if event.type == pygame.QUIT:
         return False, current_state, sound_status, screen_status, scroll_y, current_word
     if event.type == pygame.MOUSEBUTTONDOWN:
@@ -65,6 +65,10 @@ def handle_events(event, current_state, sound_status, screen_status, scroll_y, n
             
                     finally:
                         os.remove("tts.mp3")  # 음성 파일 삭제 (재생이 끝난 후)
+        if current_state == STATE_FAIL:
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if start_button_rect.collidepoint(event.pos):
+                    current_state = STATE_GAME
 
         if current_state == STATE_STAMP: # STAMP 상태일 때
             # 마우스 휠을 사용한 스크롤

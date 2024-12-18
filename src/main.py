@@ -66,6 +66,7 @@ scroll_y = 0
 
 next_button_rect = 0
 button_rect = 0
+start_button_rect = 0
 
 ###########예림###############
 sound_status = True
@@ -79,7 +80,7 @@ screen_status = False
 while running:
     for event in pygame.event.get():
         running, current_state, sound_status, screen_status, scroll_y, current_word = handle_events(
-            event, current_state, sound_status, screen_status, scroll_y, next_button_rect, current_word, button_rect
+            event, current_state, sound_status, screen_status, scroll_y, next_button_rect, current_word, button_rect, start_button_rect
             )
     screen.fill(BLACK)
 
