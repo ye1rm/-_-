@@ -3,6 +3,9 @@ import subprocess
 import os
 import platform
 
+current_dir = os.path.dirname(os.path.abspath(__file__))
+src_dir = os.path.join(current_dir, "src")
+
 # Streamlit 페이지 설정
 st.set_page_config(page_title="TALA Game", layout="centered")
 
@@ -31,7 +34,7 @@ if st.button("🚀 Start Game"):
         python_cmd = "python3" if platform.system() != "Windows" else "python"
 
         # subprocess로 main.py 실행
-        result = subprocess.run([python_cmd, "main.py"], cwd="src", capture_output=True, text=True)
+        result = subprocess.run([python_cmd, "main.py"], cwd=src_dir, capture_output=True, text=True)
 
         if result.returncode == 0:
             st.success("🎉 게임이 성공적으로 시작되었습니다! 🎉")

@@ -1,6 +1,5 @@
 #main.py
 import pygame
-import os
 from constants import *
 from assets import assets_paths
 from game_logic import handle_events
@@ -8,6 +7,7 @@ from HomeScreen import render_home_screen
 from GameScreen import game_start, get_current_word, draw_random_letters, render_talaconda
 from StampScreen import render_stemp_screen
 from ClearScreen import render_clear_screen
+from FailScreen import render_fail_screen
 ###############예림##############
 from HowScreen import render_how_screen # 추가된 부분
 from WordClearScreen import render_word_clear_screen
@@ -52,6 +52,7 @@ game_status = True
 clock = pygame.time.Clock()
 letter_positions = [] # 알파벳의 위치를 저장할 리스트
 excluded_positions = [] # tala의 위치를 저장할 리스트
+clear_words = [] # 클리어한 단어 저장할 리스트
 score = 0
 level = 1
 current_word = ""
@@ -60,13 +61,12 @@ current_index = 0
 setWord = ""
 maxScore = 0
 
-# tts효과음 전용 채널 생성
-effect_channel = pygame.mixer.Channel(1)  # 채널 1번에 tts효과음을 할당
-
 # 스크롤 초기 설정
 scroll_y = 0 
 
 next_button_rect = 0
+button_rect = 0
+start_button_rect = 0
 
 ###########예림###############
 sound_status = True
@@ -80,7 +80,7 @@ screen_status = False
 while running:
     for event in pygame.event.get():
         running, current_state, sound_status, screen_status, scroll_y, current_word = handle_events(
-            event, current_state, sound_status, screen_status, scroll_y, next_button_rect, current_word
+            event, current_state, sound_status, screen_status, scroll_y, next_button_rect, current_word, button_rect, start_button_rect
             )
     screen.fill(BLACK)
 
@@ -105,8 +105,7 @@ while running:
             letter_positions.clear()
  
         setWord, current_word, current_index, level, score, current_state = game_start(
-            game_surface, current_word, setWord, level, score, letter_positions,excluded_positions, current_index, word_font, current_state,
-            effect_channel
+            game_surface, current_word, setWord, level, score, letter_positions,excluded_positions, current_index, word_font, current_state
             )  # 게임 실행
         
         clock.tick(FPS)
@@ -162,8 +161,15 @@ while running:
     # 게임 클리어 시.
     elif current_state == STATE_CLEAR:
         button_rect, next_button_rect = render_clear_screen(screen, font, score, current_word, current_mean)
+        if current_word not in clear_words:
+            clear_words.append(current_word)
         setWord = ""
         current_index = 0
+    
+    # 게임 실패 시.
+    elif current_state == STATE_FAIL:
+        start_button_rect = render_fail_screen(screen, font, score)
+        score = 0
 
     # 홈 버튼 생성   
     if current_state != STATE_HOME:
@@ -171,7 +177,7 @@ while running:
     
     # 도장판
     if current_state == STATE_STAMP:
-        render_stemp_screen(game_surface, stamp_font, stamp_level_font, scroll_y)
+        render_stemp_screen(game_surface, stamp_font, stamp_level_font, scroll_y, clear_words)
 
         # 최고 점수 출력
         maxScore_text_surface = font.render(f"최고 점수: {maxScore}", True, TEXT_COLOR)

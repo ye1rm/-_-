@@ -60,6 +60,8 @@ stampBoard_image, stampBoard_width, stampBoard_height = load_and_scale_image(ass
 home_image, home_width, home_height = load_and_scale_image(assets_paths["home"], 0.07)
 # 음성 지원
 voice_image, voice_width, voice_height = load_and_scale_image(assets_paths["voice"], 0.07)
+# 칭찬 도장
+stamp_image, stamp_width, stamp_height = load_and_scale_image(assets_paths["stamp"], 0.2)
 
 # 캐릭터 이미지
 normal_face_image = pygame.transform.scale(
