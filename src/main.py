@@ -60,9 +60,6 @@ current_index = 0
 setWord = ""
 maxScore = 0
 
-# tts효과음 전용 채널 생성
-effect_channel = pygame.mixer.Channel(1)  # 채널 1번에 tts효과음을 할당
-
 # 스크롤 초기 설정
 scroll_y = 0 
 
@@ -105,8 +102,7 @@ while running:
             letter_positions.clear()
  
         setWord, current_word, current_index, level, score, current_state = game_start(
-            game_surface, current_word, setWord, level, score, letter_positions,excluded_positions, current_index, word_font, current_state,
-            effect_channel
+            game_surface, current_word, setWord, level, score, letter_positions,excluded_positions, current_index, word_font, current_state
             )  # 게임 실행
         
         clock.tick(FPS)

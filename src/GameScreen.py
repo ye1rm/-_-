@@ -1,13 +1,30 @@
 # GameScreen.py
 import pygame
 import random
+import pygame.mixer
 import string
 from constants import *
 from LevelWords import *
-from ttsSound import play_tts_sound
-
+#from ttsSound import play_tts_sound
+from gtts import gTTS
 import os
-import pygame.mixer
+
+# TTS 기능을 GameScreen.py에 추가 (gTTS 사용)
+def play_tts_sound(letter):
+    # gTTS로 음성 생성 (MP3 형식)
+    tts = gTTS(text=letter, lang='en')  # 영어로 음성 생성
+    tts.save("tts.mp3")
+
+    try:
+        sound = pygame.mixer.Sound("tts.mp3")
+        sound.play()  # 비동기적으로 음성 재생
+
+        # 음성이 재생되는 동안 기다림
+        while pygame.mixer.get_busy():
+            pygame.time.Clock().tick(FPS)
+            
+    finally:
+        os.remove("tts.mp3")  # 음성 파일 삭제 (재생이 끝난 후)
 
 # TALAconda 초기 설정
 talaconda = [{"x": 5 * CELL_SIZE, "y": 5 * CELL_SIZE}] # 초기 위치
@@ -146,7 +163,7 @@ def draw_random_letters(game_surface, font, current_word, current_index, letter_
         # 알파벳을 배경 중앙에 그리기
         game_surface.blit(letter_surface, (x_centered, y_centered))
 
-def check_collision_with_buttons(game_surface, font, letter_positions, current_word, score, setWord, current_index, effect_channel):
+def check_collision_with_buttons(game_surface, font, letter_positions, current_word, score, setWord, current_index):
     global talaconda
     global getWord
     global levelScore
@@ -161,7 +178,7 @@ def check_collision_with_buttons(game_surface, font, letter_positions, current_w
         if head_rect.colliderect(letter_rect): # 머리와 버튼 위치 비교
 
             # 획득한 알파벳 발음 재생
-            play_tts_sound(letter, effect_channel)
+            play_tts_sound(letter)
 
             if letter == current_word[current_index]:  # 현재 단어의 i번째 글자와 일치하면
 
@@ -207,8 +224,9 @@ def check_collision_with_buttons(game_surface, font, letter_positions, current_w
     return False, score, setWord, current_index  # 충돌하지 않은 경우
 
 
+
 # 게임 시작
-def game_start(game_surface, current_word, setWord, level, score, letter_positions, excluded_positions, current_index, font, current_state, effect_channel):
+def game_start(game_surface, current_word, setWord, level, score, letter_positions, excluded_positions, current_index, font, current_state):
     draw_grid(game_surface)
     current_time = pygame.time.get_ticks()
 
@@ -232,7 +250,7 @@ def game_start(game_surface, current_word, setWord, level, score, letter_positio
 
     # 충돌 처리
     collision, score, setWord, current_index = check_collision_with_buttons(
-        game_surface, font, letter_positions, current_word, score, setWord, current_index, effect_channel
+        game_surface, font, letter_positions, current_word, score, setWord, current_index
     )
 
     # 충돌 후 알파벳 및 상태 갱신
@@ -253,7 +271,7 @@ def game_start(game_surface, current_word, setWord, level, score, letter_positio
             levelScore = 0
             return setWord, current_word, current_index, level, score, current_state
 
-    # 스네이크 이동
+    # 타라콘다 이동
     if current_time - last_move_time > MOVE_DELAY:
         last_move_time = current_time
         move(talaconda, direction)
