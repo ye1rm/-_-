@@ -122,4 +122,4 @@ pygame>=2.0
 ---
 
 # 📜 라이선스
-이 프로젝트는 Creative Commons Attribution-NonCommercial-ShareAlike (CC BY-NC-SA) 라이선스를 따릅니다.
+이 프로젝트는 MIT LICENSE를 따릅니다.
