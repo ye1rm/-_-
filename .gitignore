@@ -1,1 +1,4 @@
+# Ignore Python cache directories and bytecode
+__pycache__/
+*.pyc
 .DS_Store
