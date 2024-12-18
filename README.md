@@ -19,46 +19,48 @@ TALA는 영단어 학습을 스네이크를 통해 재미있고 몰입감 있게
 
 ---
 
-## 🛠️ 설치 방법  
+## 🛠️ 설치 방법
 
-TALA 게임 프로젝트를를 로컬 환경에서 실행하기 위한 설치 및 환경 설정 가이드를 안내합니다.  
+TALA 게임 프로젝트를 로컬 환경에서 실행하기 위한 설치 및 환경 설정 가이드를 안내합니다.
 
-### 1. Python 환경 확인  
-Python >= 3.7 이상이 설치되어 있는지 확인합니다. 
+### 1. Python 환경 확인
+Python >= 3.7 이상이 설치되어 있는지 확인합니다.
+설치 여부 확인:
 
----
+python --version
 
-### 2. Streamlit 설치  
-Streamlit이 설치되어 있지 않다면, 아래 명령어로 설치합니다: 
-```bash
+### 2. Streamlit 설치
+Streamlit이 설치되어 있지 않다면, 아래 명령어로 설치합니다:
+
 pip install streamlit
-```
----
 
 ### 3. 프로젝트 클론
-Githoub 저장소에서 프로젝트 파일을 클론합니다.
-```bash
+GitHub 저장소에서 프로젝트 파일을 클론합니다:
+
 git clone <your-repo-url>
 cd <project-directory>
-```
----
 
-### 4. 필요한 의존성 설치
-프로젝트 디렉토리에서 필요한 라이브러리를 설치합니다.
-```bash
+### 4. requirements.txt 파일을 통한 의존성 설치
+프로젝트 디렉토리 내에 있는 requirements.txt 파일을 사용해 필요한 라이브러리를 설치합니다:
+
 pip install -r requirements.txt
-```
-※ requirements.txt 파일이 존재하지 않는 경우, 필요 패키지를 설치합니다 (예: streamlit, pygame 등).
+※ 만약 requirements.txt가 존재하지 않을 경우, 프로젝트에서 필요한 주요 패키지(Streamlit, pygame 등)를 개별적으로 설치하세요:
 
----
+pip install streamlit pygame
 
 ### 5. Streamlit 실행
-아래 명령어를 통해 게임 애플리케이션을 실행합니다:
+아래 명령어로 애플리케이션을 실행합니다:
 
-```bash
 streamlit run app.py
-```
 브라우저에서 http://localhost:8501로 접속하여 게임을 즐길 수 있습니다!
+
+참고
+requirements.txt 파일은 프로젝트 실행에 필요한 모든 패키지를 명시해야 합니다.
+예시:
+
+streamlit>=1.0
+pygame>=2.0
+해당 파일이 최신 상태인지 확인한 뒤 사용하세요!
 
 ---
 
@@ -120,4 +122,4 @@ streamlit run app.py
 ---
 
 # 📜 라이선스
-이 프로젝트는 Creative Commons Attribution-NonCommercial-ShareAlike (CC BY-NC-SA) 라이선스를 따릅니다.
+이 프로젝트는 MIT LICENSE를 따릅니다.
