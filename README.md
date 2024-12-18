@@ -43,20 +43,21 @@ git clone <your-repo-url>
 cd <project-directory>
 
 ### 4. requirements.txt 파일을 통한 의존성 설치
-프로젝트 디렉토리 내에 있는 requirements.txt 파일을 사용해 필요한 라이브러리를 설치합니다:
-
+프로젝트 디렉토리 내에 있는 requirements.txt 파일을 사용해 필요한 라이브러리를 설치:  
+#### 한 번에 설치하기:)  
 pip install -r requirements.txt
 
-**스트림릿 (streamlit)**  
+#### 특정 라이브러리만 설치하기:)
+*스트림릿 (streamlit)*  
 설치 버전: 1.0 이상  
 설치 명령어: pip install streamlit>=1.0
 
-**파이게임 (pygame)**  
+*파이게임 (pygame)*  
 설치 버전: 2.0 이상  
 설치 명령어:
 pip install pygame>=2.0
 
-**gTTS (gtts)**  
+*gTTS (gtts)*  
 설치 버전: 2.2.3 이상  
 설치 명령어:
 pip install gtts>=2.2.3
